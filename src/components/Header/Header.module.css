@@ -1,0 +1,47 @@
+nav {
+  background-color: #230052;
+  padding: 0px 50px;
+  /* height: 70px; */
+}
+
+nav div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.active {
+  font-weight: bold;  /* Makes active link bold */
+  color: yellow !important;     /* Change color of active link */
+}
+
+.logo {
+  padding-top: 0px;
+}
+    
+.logo h1 {
+  color: white;
+  cursor: pointer;
+}
+
+/* .list {
+  float: right;
+} */
+
+.list li {
+  display: inline-block;
+  padding: 0px 30px;
+}
+
+.list li a {
+  color: white;
+  text-decoration: none;
+}
+
+.list li a:hover {
+  color: yellow;
+  transition: all 0.3 ease-in-out;
+}
+
+hr {
+  margin: 0px;
+}
