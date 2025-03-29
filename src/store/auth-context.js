@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {
+  handleLogin,
+  handleLogout,
+  // handleVerifyToken,
+} from '../services/auth-api';
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
@@ -14,15 +19,19 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true); // ✅ New state
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const pathNameRef = useRef(''); // Using useRef to store pathName without triggering re-renders
 
   // to ensure that the component doesn't re render for every state change
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+    const token = localStorage.getItem('token'); // Store the token in localStorage
 
-    if (storedUserLoggedInInformation === '1') {
+    if (storedUserLoggedInInformation === '1' && token) {
       setIsLoggedIn(true);
+
+      // Optional: You could check token expiry here if you have expiry time available
+      // handleVerifyToken(token, setIsLoggedIn)
     }
     // IsLoggedIn state changes only after the component has been rendered hence it would still be set false and then true
     setIsCheckingAuth(false); // ✅ Mark auth check as complete
@@ -55,19 +64,17 @@ export const AuthContextProvider = (props) => {
   const loginHandler = (email, password) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
-    getPathNameHandler();
-    localStorage.setItem('isLoggedIn', '1');
-    setIsLoggedIn(true);
-    setIsLoggedOut(false); // if the user isn't logged in and they are accessing a page e.g. /add-movie, they will be redirected to /login and
-    // the path/page where they were at before redirected to /login is saved in localStorage so when they login,
-    // they will be redirected to path that was saved in localStorage
+    handleLogin(
+      email,
+      password,
+      getPathNameHandler,
+      setIsLoggedIn,
+      setIsLoggedOut
+    );
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-    setIsLoggedOut(true); // this ensures that when the user logs out, the path/page where they were at before redirected to /login
-    //  isn't saved in localStorage so when they login again, they will be redirected to /home
+    handleLogout(setIsLoggedIn, setIsLoggedOut);
   };
 
   return (

@@ -1,42 +1,58 @@
 import axios from 'axios';
 import { handleAxiosError } from '../utils/handleAxiosError';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
 
 const useApi = () => {
   const navigate = useNavigate();
-  const fetchMoviesHandler = async (id, setMovies, setIsLoading, setError) => {
-    if (id === undefined) {
-      setIsLoading(true);
-      setError(null); // to clear out any previous errors we got
-    }
-    try {
-      let response;
-      if (id !== undefined) {
-        response = await axios.get(`${API_URL}/${id}`);
-      } else {
-        response = await axios.get(`${API_URL}`);
-      }
-
-      const data = await response.data;
-      console.log(data);
-
-      setMovies(data);
-    } catch (error) {
+  const fetchMoviesHandler = useCallback(
+    async (id, setMovies, setIsLoading, setError) => {
       if (id === undefined) {
-        setError(error.message);
-      } else {
-        handleAxiosError(error);
+        setIsLoading(true);
+        setError(null); // to clear out any previous errors we got
       }
-    }
-    if (id === undefined) {
-      setIsLoading(false);
-    }
-  };
+      try {
+        let response;
+        if (id !== undefined) {
+          response = await axios.get(`${API_URL}/movies/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+        } else {
+          response = await axios.get(`${API_URL}/movies`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+        }
+
+        const data = await response.data;
+        console.log(data.data);
+
+        setMovies(data);
+      } catch (error) {
+        if (id === undefined) {
+          setError(error.message);
+        } else {
+          handleAxiosError(error);
+        }
+      }
+      if (id === undefined) {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   const addMovieHandler = async (movie, setMovie, setInvalidInput) => {
     try {
-      const response = await axios.post(`${API_URL}`, movie);
+      const response = await axios.post(`${API_URL}/movies`, movie, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
       const data = await response.data;
       console.log(data.data);
@@ -54,7 +70,11 @@ const useApi = () => {
 
   const editMovieHandler = async (id, movie) => {
     try {
-      const response = await axios.put(`${API_URL}/${id}`, movie);
+      const response = await axios.put(`${API_URL}/movies/${id}`, movie, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
       const data = await response.data;
       console.log(data.data);
@@ -78,7 +98,11 @@ const useApi = () => {
     setError
   ) => {
     try {
-      const response = await axios.delete(`${API_URL}/${id}`);
+      const response = await axios.delete(`${API_URL}/movies/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
 
       const data = await response.data;
       console.log(data);
