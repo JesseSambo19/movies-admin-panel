@@ -31,7 +31,11 @@ const useApi = () => {
         const data = await response.data;
         console.log(data.data);
 
-        setMovies(data);
+        if (id !== undefined) {
+          setMovies(data);
+        } else {
+          setMovies(data.data);
+        }
       } catch (error) {
         if (id === undefined) {
           setError(error.message);
