@@ -11,7 +11,7 @@ import classes from './Login.module.css';
 import Button from '../../components/UI/Button/Button';
 import AuthContext from '../../store/auth-context';
 import Input from '../../components/UI/Input/Input';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Center from '../../components/UI/Center/Center';
 
 // this reducer is created outside of the scope of this component because it doesn't need to interact with anything defined in the component
@@ -53,6 +53,7 @@ const Login = () => {
   });
 
   const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -104,6 +105,7 @@ const Login = () => {
 
   // if a user is already logged in and they are trying to access the login page
   // they will be redirected to home page
+  console.log(`Login pathname: ${authCtx.pathName}`);
   if (authCtx.isLoggedIn && authCtx.pathName === '') {
     return (
       <Navigate
@@ -117,12 +119,14 @@ const Login = () => {
     console.log(
       `Redirecting user to: ${authCtx.pathName} after successful login`
     );
-    return (
-      <Navigate
-        to={authCtx.pathName}
-        replace
-      />
-    ); // ✅ Redirect logged-in users
+    navigate(authCtx.pathName); // ✅ Redirect logged-in users
+    authCtx.onRemovePathName(); // the path name that was stored in localStorage will be removed upon successful login
+    // return (
+    //   <Navigate
+    //     to={authCtx.pathName}
+    //     replace
+    //   />
+    // ); // ✅ Redirect logged-in users
   }
 
   const passwordChangeHandler = (event) => {

@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import axios from 'axios';
-
 import Movie from './components/Movie/Movie';
 import classes from './MoviesList.module.css';
 import Card from '../../components/UI/Card/Card';
 import Button from '../../components/UI/Button/Button';
-// import { handleAxiosError } from '../../utils/handleAxiosError';
 import useApi from '../../services/home-api';
 
 const MovieList = () => {

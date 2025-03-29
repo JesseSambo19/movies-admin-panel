@@ -8,6 +8,7 @@ const AuthContext = React.createContext({
   onLogout: () => {},
   onLogin: (email, password) => {},
   onAddPathName: (pathName) => {},
+  onRemovePathName: () => {},
 });
 
 export const AuthContextProvider = (props) => {
@@ -27,9 +28,15 @@ export const AuthContextProvider = (props) => {
     setIsCheckingAuth(false); // ✅ Mark auth check as complete
 
     // return () => {};
-    //  Clean-up functions are typically used for tasks like canceling subscriptions, 
+    //  Clean-up functions are typically used for tasks like canceling subscriptions,
     // clearing timers, or removing event listeners when the component unmounts.
   }, []);
+
+  const getPathNameHandler = () => {
+    // setPathName(pathName);
+    pathNameRef.current = localStorage.getItem('pathName') ?? '';
+    console.log(`retrieved path name ${pathNameRef.current}`);
+  };
 
   const addPathNameHandler = (pathName) => {
     localStorage.setItem('pathName', pathName);
@@ -48,17 +55,19 @@ export const AuthContextProvider = (props) => {
   const loginHandler = (email, password) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
+    getPathNameHandler();
     localStorage.setItem('isLoggedIn', '1');
     setIsLoggedIn(true);
-    setIsLoggedOut(false);
+    setIsLoggedOut(false); // if the user isn't logged in and they are accessing a page e.g. /add-movie, they will be redirected to /login and
+    // the path/page where they were at before redirected to /login is saved in localStorage so when they login,
+    // they will be redirected to path that was saved in localStorage
   };
 
   const logoutHandler = () => {
     localStorage.removeItem('isLoggedIn');
     setIsLoggedIn(false);
-    setIsLoggedOut(true);
-
-    removePathNameHandler();
+    setIsLoggedOut(true); // this ensures that when the user logs out, the path/page where they were at before redirected to /login
+    //  isn't saved in localStorage so when they login again, they will be redirected to /home
   };
 
   return (
@@ -72,6 +81,7 @@ export const AuthContextProvider = (props) => {
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onAddPathName: addPathNameHandler,
+        onRemovePathName: removePathNameHandler,
       }}
     >
       {props.children}
