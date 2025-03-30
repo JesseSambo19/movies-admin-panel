@@ -14,6 +14,7 @@ import Input from '../../../components/UI/Input/Input';
 import {
   Link,
   Navigate,
+  useNavigate,
   // useNavigate
 } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
@@ -95,7 +96,7 @@ const Register = () => {
   );
 
   const authCtx = useContext(AuthContext);
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -242,7 +243,8 @@ const Register = () => {
         nameState.value,
         emailState.value,
         passwordState.value,
-        confirmPasswordState.value
+        confirmPasswordState.value,
+        navigate
       );
     } else if (!nameIsValid) {
       // this targets the function that was set in the Input component's ref variable

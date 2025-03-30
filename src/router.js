@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/Authentication/Register/Register';
 import ForgotPassword from './pages/Authentication/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword/ResetPassword';
+import VerifyEmail from './pages/Authentication/VerifyEmail/VerifyEmail';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
   },
   { path: '/login', element: <Login /> }, // Login is outside to prevent navbar/footer
   { path: '/register', element: <Register /> }, // Register is outside to prevent navbar/footer
+  { path: '/verify-email', element: <VerifyEmail /> }, // VerifyEmail is outside to prevent navbar/footer
   { path: '/forgot-password', element: <ForgotPassword /> }, // ForgotPassword is outside to prevent navbar/footer
   { path: '/reset-password/:token', element: <ResetPassword /> }, // ResetPassword is outside to prevent navbar/footer
 ]);

@@ -4,6 +4,7 @@ import {
   handleLogin,
   handleLogout,
   handleRegister,
+  handleVerifyEmail,
   // handleVerifyToken,
 } from '../services/auth-api';
 
@@ -17,6 +18,7 @@ const AuthContext = React.createContext({
   onRegister: (name, email, password, confirmPassword) => {},
   onForgotPassword: (email) => {},
   onResetPassword: (email, password, confirmPassword) => {},
+  onVerifyEmail: () => {},
   onAddPathName: (pathName) => {},
   onRemovePathName: () => {},
 });
@@ -82,7 +84,13 @@ export const AuthContextProvider = (props) => {
     handleLogout(setIsLoggedIn, setIsLoggedOut);
   };
 
-  const registerHandler = (name, email, password, confirmPassword) => {
+  const registerHandler = (
+    name,
+    email,
+    password,
+    confirmPassword,
+    navigate
+  ) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
 
@@ -92,6 +100,7 @@ export const AuthContextProvider = (props) => {
     }
 
     alert('Successfully registered.');
+    navigate('/verify-email');
 
     // handleRegister(
     //   name,
@@ -145,6 +154,18 @@ export const AuthContextProvider = (props) => {
     // );
   };
 
+  const verifyEmailHandler = () => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+
+    alert(
+      'A new verification link has been sent to the email address you provided during registration.'
+    );
+
+    // handleVerifyEmail(
+    // );
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -158,6 +179,7 @@ export const AuthContextProvider = (props) => {
         onRegister: registerHandler,
         onForgotPassword: forgotPasswordHandler,
         onResetPassword: resetPasswordHandler,
+        onVerifyEmail: verifyEmailHandler,
         onAddPathName: addPathNameHandler,
         onRemovePathName: removePathNameHandler,
       }}

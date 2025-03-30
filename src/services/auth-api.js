@@ -43,9 +43,37 @@ export const handleLogout = async (setIsLoggedIn, setIsLoggedOut) => {
   }
 };
 
-export const handleRegister = () => {};
+export const handleRegister = async (
+  name,
+  email,
+  password,
+  getPathNameHandler,
+  setIsLoggedIn,
+  setIsLoggedOut
+) => {
+  try {
+    const response = await axiosInstance.post('register', {
+      name,
+      email,
+      password,
+    });
 
-export const handleForgotPassword = (
+    alert(`Successfully registered. ${response.data}`);
+
+    // handleLogin(
+    //   email,
+    //   password,
+    //   getPathNameHandler,
+    //   setIsLoggedIn,
+    //   setIsLoggedOut
+    // );
+  } catch (error) {
+    handleAxiosError(error);
+    // alert('Invalid credentials');
+  }
+};
+
+export const handleForgotPassword = async (
   email,
   getPathNameHandler,
   setIsLoggedIn,
@@ -60,6 +88,8 @@ export const handleResetPassword = (
   setIsLoggedIn,
   setIsLoggedOut
 ) => {};
+
+export const handleVerifyEmail = () => {};
 
 export const handleVerifyToken = async (token, setIsLoggedIn) => {
   await axios
