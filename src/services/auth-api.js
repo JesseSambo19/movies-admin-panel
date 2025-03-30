@@ -43,6 +43,24 @@ export const handleLogout = async (setIsLoggedIn, setIsLoggedOut) => {
   }
 };
 
+export const handleRegister = () => {};
+
+export const handleForgotPassword = (
+  email,
+  getPathNameHandler,
+  setIsLoggedIn,
+  setIsLoggedOut
+) => {};
+
+export const handleResetPassword = (
+  email,
+  password,
+  confirmPassword,
+  getPathNameHandler,
+  setIsLoggedIn,
+  setIsLoggedOut
+) => {};
+
 export const handleVerifyToken = async (token, setIsLoggedIn) => {
   await axios
     .post('verify-token', { token })

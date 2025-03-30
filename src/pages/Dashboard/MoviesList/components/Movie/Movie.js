@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import classes from './Movie.module.css';
 import { Link } from 'react-router-dom';
-import Button from '../../../../components/UI/Button/Button';
-import Modal from '../../../../components/UI/Modal/Modal';
+import Button from '../../../../../components/UI/Button/Button';
+import Modal from '../../../../../components/UI/Modal/Modal';
 
 const Movie = (props) => {
   const [showModal, setShowModal] = useState(false);

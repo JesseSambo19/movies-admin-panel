@@ -1,4 +1,4 @@
-.login {
+.register {
   width: 90%;
   max-width: 40rem;
   margin: 2rem auto;
@@ -7,4 +7,13 @@
 
 .actions {
   text-align: center;
+}
+
+.link {
+  float: right;
+  margin-top: 30px;
+}
+
+.link a {
+  color: #230052;
 }

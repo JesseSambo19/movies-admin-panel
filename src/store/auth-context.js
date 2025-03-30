@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
+  handleForgotPassword,
   handleLogin,
   handleLogout,
+  handleRegister,
   // handleVerifyToken,
 } from '../services/auth-api';
 
@@ -12,6 +14,9 @@ const AuthContext = React.createContext({
   pathName: '',
   onLogout: () => {},
   onLogin: (email, password) => {},
+  onRegister: (name, email, password, confirmPassword) => {},
+  onForgotPassword: (email) => {},
+  onResetPassword: (email, password, confirmPassword) => {},
   onAddPathName: (pathName) => {},
   onRemovePathName: () => {},
 });
@@ -77,6 +82,69 @@ export const AuthContextProvider = (props) => {
     handleLogout(setIsLoggedIn, setIsLoggedOut);
   };
 
+  const registerHandler = (name, email, password, confirmPassword) => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+
+    if (password !== confirmPassword) {
+      alert(`The password field confirmation does not match.`);
+      return;
+    }
+
+    alert('Successfully registered.');
+
+    // handleRegister(
+    //   name,
+    //   email,
+    //   password,
+    //   confirmPassword,
+    //   getPathNameHandler,
+    //   setIsLoggedIn,
+    //   setIsLoggedOut
+    // );
+  };
+
+  const forgotPasswordHandler = (
+    email,
+    getPathNameHandler,
+    setIsLoggedIn,
+    setIsLoggedOut
+  ) => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+
+    alert('We have emailed your password reset link.');
+
+    // handleForgotPassword(
+    //   email,
+    //   getPathNameHandler,
+    //   setIsLoggedIn,
+    //   setIsLoggedOut
+    // );
+  };
+
+  const resetPasswordHandler = (email, password, confirmPassword, navigate) => {
+    // We should of course check email and password
+    // But it's just a dummy/ demo anyways
+
+    if (password !== confirmPassword) {
+      alert(`The password field confirmation does not match.`);
+      return;
+    }
+
+    alert('Your password has been reset.');
+    navigate('/login');
+
+    // handleResetPassword(
+    //   email,
+    // password,
+    // confirmPassword,
+    //   getPathNameHandler,
+    //   setIsLoggedIn,
+    //   setIsLoggedOut
+    // );
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -87,6 +155,9 @@ export const AuthContextProvider = (props) => {
         pathName: pathNameRef.current, // Provide pathName from useRef
         onLogout: logoutHandler,
         onLogin: loginHandler,
+        onRegister: registerHandler,
+        onForgotPassword: forgotPasswordHandler,
+        onResetPassword: resetPasswordHandler,
         onAddPathName: addPathNameHandler,
         onRemovePathName: removePathNameHandler,
       }}

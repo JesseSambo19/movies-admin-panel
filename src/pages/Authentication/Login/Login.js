@@ -6,13 +6,13 @@ import React, {
   useRef,
 } from 'react';
 
-import Card from '../../components/UI/Card/Card';
+import Card from '../../../components/UI/Card/Card';
 import classes from './Login.module.css';
-import Button from '../../components/UI/Button/Button';
-import AuthContext from '../../store/auth-context';
-import Input from '../../components/UI/Input/Input';
-import { Navigate, useNavigate } from 'react-router-dom';
-import Center from '../../components/UI/Center/Center';
+import Button from '../../../components/UI/Button/Button';
+import AuthContext from '../../../store/auth-context';
+import Input from '../../../components/UI/Input/Input';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Center from '../../../components/UI/Center/Center';
 
 // this reducer is created outside of the scope of this component because it doesn't need to interact with anything defined in the component
 // all the data which will be required by this function will be passed  into this function when it's executed by React, automatically
@@ -93,16 +93,6 @@ const Login = () => {
   }, [emailIsValid, passwordIsValid]);
   // }, [emailState.isValid, passwordState.isValid]); // alternatively one can access the properties that need to be dependencies instead of the whole state object
 
-  const emailChangeHandler = (event) => {
-    // setEnteredEmail(event.target.value);
-    dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
-
-    // setFormIsValid(
-    //         emailState.value.includes('@') && passwordState.isValid
-
-    // );
-  };
-
   // if a user is already logged in and they are trying to access the login page
   // they will be redirected to home page
   console.log(`Login pathname: ${authCtx.pathName}`);
@@ -128,6 +118,16 @@ const Login = () => {
     //   />
     // ); // ✅ Redirect logged-in users
   }
+
+  const emailChangeHandler = (event) => {
+    // setEnteredEmail(event.target.value);
+    dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
+
+    // setFormIsValid(
+    //         emailState.value.includes('@') && passwordState.isValid
+
+    // );
+  };
 
   const passwordChangeHandler = (event) => {
     // setEnteredPassword(event.target.value);
@@ -180,21 +180,35 @@ const Login = () => {
             ref={passwordInputRef}
             id="password"
             label="Password"
-            type="passwod"
+            type="password"
             isValid={passwordIsValid}
             value={passwordState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />
+          {/* <Input
+            ref={passwordInputRef}
+            id="password"
+            label="Remember me"
+            type="checkbox"
+            isValid={passwordIsValid}
+            value={passwordState.value}
+            onChange={passwordChangeHandler}
+            onBlur={validatePasswordHandler}
+          /> */}
           <div className={classes.actions}>
             <Button
               type="submit"
-              className={classes.btn}
+              // className={classes.btn}
               disabled={!formIsValid}
             >
               Login
             </Button>
           </div>
+          <span className={classes.links}>
+            <Link to="/register">Don't have an account?</Link>
+            <Link to="/forgot-password">Forgot your password?</Link>
+          </span>
         </form>
       </Card>
     </Center>
