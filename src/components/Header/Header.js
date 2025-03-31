@@ -1,17 +1,47 @@
-import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useContext, useState, useRef, useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import classes from './Header.module.css';
 import AuthContext from '../../store/auth-context';
-import Button from '../UI/Button/Button';
+import { ChevronDown } from 'lucide-react';
 
 const Header = () => {
   const authCtx = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null); // Reference for the dropdown
+
+  const openDropdown = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    setShowDropdown(false);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className={classes.navbar}>
       <div>
         <span className={classes.logo}>
-          <h1>Movie App</h1>
+          <Link
+            to="/home"
+            style={{ textDecoration: 'none' }}
+          >
+            <h1>Movie App</h1>
+          </Link>
         </span>
         <ul className={classes.list}>
           <li>
@@ -38,13 +68,29 @@ const Header = () => {
               Add Movie
             </NavLink>
           </li>
-          <li>
-            <Button
-              style={{ padding: '0px', height: '40px', width: '100px' }}
-              onClick={authCtx.onLogout}
+          <li
+            ref={dropdownRef}
+            className={classes['position-relative']}
+          >
+            <p
+              className={classes.dropdown}
+              onClick={openDropdown}
             >
-              Logout
-            </Button>
+              {authCtx.userName}
+              <span style={{ paddingTop: '100px', paddingLeft: '10px' }}>
+                <ChevronDown size={16} />
+              </span>
+            </p>
+            {showDropdown && (
+              <ul className={classes['dropdown-menu']}>
+                <Link to="/profile">
+                  <li style={{ paddingTop: '15px' }}>Profile</li>
+                </Link>
+                <li onClick={authCtx.onLogout}>
+                  <p>Logout</p>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </div>

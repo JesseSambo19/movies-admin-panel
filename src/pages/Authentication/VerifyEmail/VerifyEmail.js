@@ -1,25 +1,24 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useContext,
-  useRef,
-} from 'react';
+import React, { useEffect, useContext } from 'react';
 
-import Card from '../../../components/UI/Card/Card';
-import classes from './VerifyEmail.module.css';
-import Button from '../../../components/UI/Button/Button';
+// import classes from './VerifyEmail.module.css';
 import AuthContext from '../../../store/auth-context';
 import {
-  Link,
   Navigate,
+  useParams,
   // useNavigate
 } from 'react-router-dom';
-import Center from '../../../components/UI/Center/Center';
+import Center from '../../../components/UI/Center/Center'
 
 const VerifyEmail = () => {
   const authCtx = useContext(AuthContext);
   //   const navigate = useNavigate();
+
+  const { id } = useParams(); // Get the userId from URL
+  useEffect(() => {
+    if (id) {
+      authCtx.onVerifyEmail(id); // Call the function to verify email
+    }
+  }, [authCtx, id]);
 
   // if a user is already logged in and they are trying to access the login page
   // they will be redirected to home page
@@ -50,26 +49,7 @@ const VerifyEmail = () => {
 
   return (
     <Center>
-      <Card className={classes['verify-email']}>
-        <p>
-          Thanks for signing up! Before getting started, could you verify your
-          email address by clicking on the link we just emailed to you? If you
-          didn't receive the email, we will gladly send you another.
-        </p>
-        <span className={classes.space}>
-          <div className={classes.actions}>
-            <Button
-              type="submit"
-              // className={classes.btn}
-              // disabled={!formIsValid}
-              onClick={authCtx.onVerifyEmail}
-            >
-              Resend Verification Email
-            </Button>
-          </div>
-          <Link onClick={authCtx.onLogout}>Log Out</Link>
-        </span>
-      </Card>
+      <h2>Verifying your email...</h2>
     </Center>
   );
 };

@@ -214,6 +214,7 @@ const ResetPassword = () => {
     if (formIsValid) {
       authCtx.onResetPassword(
         emailState.value,
+        token,
         passwordState.value,
         confirmPasswordState.value,
         navigate

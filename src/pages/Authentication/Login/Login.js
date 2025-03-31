@@ -28,10 +28,10 @@ const emailReducer = (state, action) => {
 
 const passwordReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
-    return { value: action.val, isValid: action.val.trim().length > 6 };
+    return { value: action.val, isValid: action.val.trim().length >= 8 };
   }
   if (action.type === 'INPUT_BLUR') {
-    return { value: state.value, isValid: state.value.trim().length > 6 };
+    return { value: state.value, isValid: state.value.trim().length >= 8 };
   }
   return { value: '', isValid: false };
 };
@@ -153,7 +153,7 @@ const Login = () => {
     event.preventDefault();
     // props.onLogin(emailState.value, passwordState.value);
     if (formIsValid) {
-      authCtx.onLogin(emailState.value, passwordState.value);
+      authCtx.onLogin(emailState.value, passwordState.value, navigate);
     } else if (!emailIsValid) {
       // this targets the function that was set in the Input component's ref variable
       emailInputRef.current.focus();

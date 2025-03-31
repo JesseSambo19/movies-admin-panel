@@ -4,13 +4,17 @@ import {
   handleLogin,
   handleLogout,
   handleRegister,
+  handleResetPassword,
   handleVerifyEmail,
+  resendVerificationEmail,
   // handleVerifyToken,
 } from '../services/auth-api';
 
 const AuthContext = React.createContext({
+  userName: '',
   isLoggedIn: false,
   isLoggedOut: false,
+  isVerified: false,
   isCheckingAuth: true, // ✅ New state to indicate checking auth
   pathName: '',
   onLogout: () => {},
@@ -18,14 +22,17 @@ const AuthContext = React.createContext({
   onRegister: (name, email, password, confirmPassword) => {},
   onForgotPassword: (email) => {},
   onResetPassword: (email, password, confirmPassword) => {},
-  onVerifyEmail: () => {},
+  onVerifyEmail: (email, password) => {},
+  onResendVerificationEmail: (userId, navigate) => {},
   onAddPathName: (pathName) => {},
   onRemovePathName: () => {},
 });
 
 export const AuthContextProvider = (props) => {
+  const [userName, setUserName] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const pathNameRef = useRef(''); // Using useRef to store pathName without triggering re-renders
 
@@ -33,9 +40,13 @@ export const AuthContextProvider = (props) => {
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
     const token = localStorage.getItem('token'); // Store the token in localStorage
+    const userName = localStorage.getItem('userName'); // Retrieve the user's name from localStorage
+    const isVerified = localStorage.getItem('isVerified'); // Retrieve the user's name from localStorage
 
-    if (storedUserLoggedInInformation === '1' && token) {
+    if (storedUserLoggedInInformation === '1' && isVerified === '1' && token) {
       setIsLoggedIn(true);
+      setIsVerified(true);
+      setUserName(userName);
 
       // Optional: You could check token expiry here if you have expiry time available
       // handleVerifyToken(token, setIsLoggedIn)
@@ -68,20 +79,23 @@ export const AuthContextProvider = (props) => {
     console.log('removed stored path name');
   };
 
-  const loginHandler = (email, password) => {
+  const loginHandler = (email, password, navigate) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
     handleLogin(
+      setUserName,
       email,
       password,
       getPathNameHandler,
       setIsLoggedIn,
-      setIsLoggedOut
+      setIsLoggedOut,
+      setIsVerified,
+      navigate
     );
   };
 
   const logoutHandler = () => {
-    handleLogout(setIsLoggedIn, setIsLoggedOut);
+    handleLogout(setIsLoggedIn, setIsLoggedOut, setUserName, setIsVerified);
   };
 
   const registerHandler = (
@@ -100,39 +114,46 @@ export const AuthContextProvider = (props) => {
     }
 
     alert('Successfully registered.');
-    navigate('/verify-email');
+    // navigate('/verify-email');
 
-    // handleRegister(
-    //   name,
-    //   email,
-    //   password,
-    //   confirmPassword,
-    //   getPathNameHandler,
-    //   setIsLoggedIn,
-    //   setIsLoggedOut
-    // );
+    handleRegister(
+      name,
+      email,
+      password,
+      confirmPassword,
+      navigate
+      // getPathNameHandler,
+      // setIsLoggedIn,
+      // setIsLoggedOut
+    );
   };
 
   const forgotPasswordHandler = (
-    email,
-    getPathNameHandler,
-    setIsLoggedIn,
-    setIsLoggedOut
+    email
+    // getPathNameHandler,
+    // setIsLoggedIn,
+    // setIsLoggedOut
   ) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
 
     alert('We have emailed your password reset link.');
 
-    // handleForgotPassword(
-    //   email,
-    //   getPathNameHandler,
-    //   setIsLoggedIn,
-    //   setIsLoggedOut
-    // );
+    handleForgotPassword(
+      email
+      // getPathNameHandler,
+      // setIsLoggedIn,
+      // setIsLoggedOut
+    );
   };
 
-  const resetPasswordHandler = (email, password, confirmPassword, navigate) => {
+  const resetPasswordHandler = (
+    email,
+    token,
+    password,
+    confirmPassword,
+    navigate
+  ) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
 
@@ -141,26 +162,32 @@ export const AuthContextProvider = (props) => {
       return;
     }
 
-    alert('Your password has been reset.');
-    navigate('/login');
-
-    // handleResetPassword(
-    //   email,
-    // password,
-    // confirmPassword,
-    //   getPathNameHandler,
-    //   setIsLoggedIn,
-    //   setIsLoggedOut
-    // );
+    // alert('Your password has been reset.');
+    handleResetPassword(
+      email,
+      token,
+      password,
+      confirmPassword,
+      navigate
+      // getPathNameHandler,
+      // setIsLoggedIn,
+      // setIsLoggedOut
+    );
   };
 
-  const verifyEmailHandler = () => {
+  // This should be called when the user clicks the verification link.
+  const verifyEmailHandler = (userId, navigate) => {
+    handleVerifyEmail(userId, navigate);
+  };
+
+  const resendVerificationEmailHandler = (email) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
 
-    alert(
-      'A new verification link has been sent to the email address you provided during registration.'
-    );
+    // alert(
+    //   'A new verification link has been sent to the email address you provided during registration.'
+    // );
+    resendVerificationEmail(email);
 
     // handleVerifyEmail(
     // );
@@ -169,8 +196,10 @@ export const AuthContextProvider = (props) => {
   return (
     <AuthContext.Provider
       value={{
+        userName,
         isLoggedIn,
         isLoggedOut,
+        isVerified,
         isCheckingAuth, // ✅ Provide this state to context
         // pathName: pathName,
         pathName: pathNameRef.current, // Provide pathName from useRef
@@ -180,6 +209,7 @@ export const AuthContextProvider = (props) => {
         onForgotPassword: forgotPasswordHandler,
         onResetPassword: resetPasswordHandler,
         onVerifyEmail: verifyEmailHandler,
+        onResendVerificationEmail: resendVerificationEmailHandler,
         onAddPathName: addPathNameHandler,
         onRemovePathName: removePathNameHandler,
       }}
