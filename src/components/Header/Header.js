@@ -17,6 +17,11 @@ const Header = () => {
     setShowDropdown(false);
   };
 
+  const handleLogout = () => {
+    closeDropdown();
+    authCtx.onLogout();
+  };
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -83,10 +88,13 @@ const Header = () => {
             </p>
             {showDropdown && (
               <ul className={classes['dropdown-menu']}>
-                <Link to="/profile">
+                <Link
+                  to="/profile"
+                  onClick={closeDropdown}
+                >
                   <li style={{ paddingTop: '15px' }}>Profile</li>
                 </Link>
-                <li onClick={authCtx.onLogout}>
+                <li onClick={handleLogout}>
                   <p>Logout</p>
                 </li>
               </ul>

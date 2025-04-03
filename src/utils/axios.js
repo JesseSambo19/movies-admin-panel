@@ -6,6 +6,8 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  // withCredentials: true, // If using authentication (Laravel Sanctum)
+  withCredentials: false,
 });
 
 // Interceptor to attach token to requests
@@ -23,7 +25,6 @@ axiosInstance.interceptors.request.use(
 );
 
 export default axiosInstance;
-
 
 // import axios from 'axios';
 // import { useHistory } from 'react-router-dom';

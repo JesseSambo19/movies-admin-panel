@@ -1,46 +1,91 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from './components/Layout/Layout';
+import { Layout1, Layout2 } from './components/Layout/Layout';
 import NotFound from './pages/Dashboard/NotFoundPage/NotFoundPage';
 import AddMovie from './pages/Dashboard/AddMovie/AddMovie';
 import EditMovie from './pages/Dashboard/EditMovie/EditMovie';
 import MovieList from './pages/Dashboard/MoviesList/MoviesList';
-import Home from './pages/Dashboard/Home/Home';
+import Home from './pages/Dashboard/Home2/Home';
 import Login from './pages/Authentication/Login/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/Authentication/Register/Register';
 import ForgotPassword from './pages/Authentication/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword/ResetPassword';
 import VerifyEmail from './pages/Authentication/VerifyEmail/VerifyEmail';
-import SendVerificationEmail from './pages/Authentication/SendVerificationEmail/SendVerificationEmail';
+import SendVerificationEmail from './pages/Authentication/SendOTPEmail/SendOTPEmail';
 import Profile from './pages/Dashboard/Profile/Profile';
+import AuthContext from './store/auth-context';
+import Redirect from './components/RedirectToLogin';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <ProtectedRoute />,
-    // errorElement: <ErrorElement />,
-    children: [
-      {
-        element: <Layout />, // Protects the following routes
-        children: [
-          { path: '/home', element: <Home /> },
-          { path: '/fetch-movies', element: <MovieList /> },
-          { path: '/add-movie', element: <AddMovie /> },
-          { path: '/edit-movie/:id', element: <EditMovie /> },
-          { path: '/profile', element: <Profile /> },
-          { path: '*', element: <NotFound /> },
-        ],
-      },
-    ],
-  },
-  // Authentication
-  { path: '/login', element: <Login /> }, // Login is outside to prevent navbar/footer
-  { path: '/register', element: <Register /> }, // Register is outside to prevent navbar/footer
-  { path: '/send-verification-email', element: <SendVerificationEmail /> }, // SendVerificationEmail is outside to prevent navbar/footer
-  { path: '/verify-email/:id', element: <VerifyEmail /> }, // VerifyEmail is outside to prevent navbar/footer
-  { path: '/forgot-password', element: <ForgotPassword /> }, // ForgotPassword is outside to prevent navbar/footer
-  { path: '/reset-password/:token', element: <ResetPassword /> }, // ResetPassword is outside to prevent navbar/footer
-]);
+const useRouter = () => {
+  const authCtx = useContext(AuthContext);
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <ProtectedRoute />,
+      // errorElement: <ErrorElement />,
+      children: [
+        {
+          element: authCtx.isVerified ? <Layout1 /> : <Layout2 />, // Protects the following routes
+          children: [
+            {
+              path: '/home',
+              element: authCtx.isVerified ? (
+                <Home />
+              ) : (
+                <SendVerificationEmail />
+              ),
+            },
+            {
+              path: '/fetch-movies',
+              element: authCtx.isVerified ? (
+                <MovieList />
+              ) : (
+                <SendVerificationEmail />
+              ),
+            },
+            {
+              path: '/add-movie',
+              element: authCtx.isVerified ? (
+                <AddMovie />
+              ) : (
+                <SendVerificationEmail />
+              ),
+            },
+            {
+              path: '/edit-movie/:id',
+              element: authCtx.isVerified ? (
+                <EditMovie />
+              ) : (
+                <SendVerificationEmail />
+              ),
+            },
+            {
+              path: '/profile',
+              element: authCtx.isVerified ? (
+                <Profile />
+              ) : (
+                <SendVerificationEmail />
+              ),
+            },
+            {
+              path: '*',
+              element: authCtx.isVerified ? <NotFound /> : <Redirect />,
+            },
+          ],
+        },
+      ],
+    },
+    // Authentication
+    { path: '/login', element: <Login /> }, // Login is outside to prevent navbar/footer
+    { path: '/register', element: <Register /> }, // Register is outside to prevent navbar/footer
+    // { path: '/send-verification-email', element: <SendVerificationEmail /> }, // SendVerificationEmail is outside to prevent navbar/footer
+    { path: '/verify-email/:id', element: <VerifyEmail /> }, // VerifyEmail is outside to prevent navbar/footer
+    { path: '/forgot-password', element: <ForgotPassword /> }, // ForgotPassword is outside to prevent navbar/footer
+    { path: '/reset-password/:token', element: <ResetPassword /> }, // ResetPassword is outside to prevent navbar/footer
+  ]);
 
-export default router;
+  return router;
+};
+
+export default useRouter;

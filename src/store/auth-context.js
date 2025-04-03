@@ -5,8 +5,8 @@ import {
   handleLogout,
   handleRegister,
   handleResetPassword,
-  handleVerifyEmail,
-  resendVerificationEmail,
+  handleSendOtp,
+  verifyOtp,
   // handleVerifyToken,
 } from '../services/auth-api';
 
@@ -22,8 +22,8 @@ const AuthContext = React.createContext({
   onRegister: (name, email, password, confirmPassword) => {},
   onForgotPassword: (email) => {},
   onResetPassword: (email, password, confirmPassword) => {},
-  onVerifyEmail: (email, password) => {},
-  onResendVerificationEmail: (userId, navigate) => {},
+  onSendOtp: () => {},
+  onVerifyOtp: (otpCode) => {},
   onAddPathName: (pathName) => {},
   onRemovePathName: () => {},
 });
@@ -38,18 +38,26 @@ export const AuthContextProvider = (props) => {
 
   // to ensure that the component doesn't re render for every state change
   useEffect(() => {
-    const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+    const isLoggedInCache = localStorage.getItem('isLoggedIn');
     const token = localStorage.getItem('token'); // Store the token in localStorage
-    const userName = localStorage.getItem('userName'); // Retrieve the user's name from localStorage
-    const isVerified = localStorage.getItem('isVerified'); // Retrieve the user's name from localStorage
+    const userNameCache = localStorage.getItem('userName'); // Retrieve the user's name from localStorage
+    const isVerifiedCache = localStorage.getItem('isVerified'); // Retrieve the user's name from localStorage
 
-    if (storedUserLoggedInInformation === '1' && isVerified === '1' && token) {
+    // if the user is logged in with a valid token and verified then the user will be authenticated on the dashboard
+    if (isLoggedInCache === '1' && isVerifiedCache === '1' && token) {
       setIsLoggedIn(true);
       setIsVerified(true);
-      setUserName(userName);
+      setUserName(userNameCache);
 
       // Optional: You could check token expiry here if you have expiry time available
       // handleVerifyToken(token, setIsLoggedIn)
+    }
+    // if the user is loggedin with a valid token but not verified then the user will not be authenticated on the dashboard
+    // hence they will be required to verify their email address
+    else if (isLoggedInCache === '1' && isVerifiedCache === '0' && token) {
+      setIsLoggedIn(true);
+      setIsVerified(false);
+      setUserName(userNameCache);
     }
     // IsLoggedIn state changes only after the component has been rendered hence it would still be set false and then true
     setIsCheckingAuth(false); // ✅ Mark auth check as complete
@@ -113,38 +121,13 @@ export const AuthContextProvider = (props) => {
       return;
     }
 
-    alert('Successfully registered.');
-    // navigate('/verify-email');
-
-    handleRegister(
-      name,
-      email,
-      password,
-      confirmPassword,
-      navigate
-      // getPathNameHandler,
-      // setIsLoggedIn,
-      // setIsLoggedOut
-    );
+    handleRegister(name, email, password, confirmPassword, navigate);
   };
 
-  const forgotPasswordHandler = (
-    email
-    // getPathNameHandler,
-    // setIsLoggedIn,
-    // setIsLoggedOut
-  ) => {
+  const forgotPasswordHandler = (email) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
-
-    alert('We have emailed your password reset link.');
-
-    handleForgotPassword(
-      email
-      // getPathNameHandler,
-      // setIsLoggedIn,
-      // setIsLoggedOut
-    );
+    handleForgotPassword(email);
   };
 
   const resetPasswordHandler = (
@@ -175,22 +158,12 @@ export const AuthContextProvider = (props) => {
     );
   };
 
-  // This should be called when the user clicks the verification link.
-  const verifyEmailHandler = (userId, navigate) => {
-    handleVerifyEmail(userId, navigate);
+  const sendOtpHandler = (setSendOtp) => {
+    handleSendOtp(setSendOtp);
   };
 
-  const resendVerificationEmailHandler = (email) => {
-    // We should of course check email and password
-    // But it's just a dummy/ demo anyways
-
-    // alert(
-    //   'A new verification link has been sent to the email address you provided during registration.'
-    // );
-    resendVerificationEmail(email);
-
-    // handleVerifyEmail(
-    // );
+  const verifyOtpHandler = (otpCode) => {
+    verifyOtp(otpCode, setIsVerified);
   };
 
   return (
@@ -208,8 +181,8 @@ export const AuthContextProvider = (props) => {
         onRegister: registerHandler,
         onForgotPassword: forgotPasswordHandler,
         onResetPassword: resetPasswordHandler,
-        onVerifyEmail: verifyEmailHandler,
-        onResendVerificationEmail: resendVerificationEmailHandler,
+        onVerifyOtp: verifyOtpHandler,
+        onSendOtp: sendOtpHandler,
         onAddPathName: addPathNameHandler,
         onRemovePathName: removePathNameHandler,
       }}

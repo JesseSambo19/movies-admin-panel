@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 const Redirect = () => {
   return (
     <Navigate
-      to="/home"
+      to="/login"
       replace
     />
   );

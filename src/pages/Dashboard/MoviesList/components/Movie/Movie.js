@@ -34,8 +34,8 @@ const Movie = (props) => {
                 justifyContent: 'space-around',
               }}
             >
-              <Button onClick={deleteMovie}>Yes</Button>
-              <Button onClick={closeModal}>No</Button>
+              <Button onClick={deleteMovie}>Ok</Button>
+              <Button onClick={closeModal}>Cancel</Button>
             </span>
           </div>
         </Modal>

@@ -7,13 +7,13 @@ const ProtectedRoute = () => {
   const location = useLocation();
 
   console.log(
-    `ProtectedRoute - Checking Auth: ${authCtx.isCheckingAuth}, isLoggedIn: ${authCtx.isLoggedIn}`
+    `ProtectedRoute - Checking Auth: ${authCtx.isCheckingAuth}, isLoggedIn: ${authCtx.isLoggedIn}, isVerified: ${authCtx.isVerified}`
   );
 
   // when the website is loaded or reloaded, this code checkes for authentication
-  if (authCtx.isCheckingAuth) {
-    return <div>Loading...</div>; // ✅ Show a loading screen while checking auth
-  }
+  // if (authCtx.isCheckingAuth) {
+  //   return <div>Loading...</div>; // ✅ Show a loading screen while checking auth
+  // }
 
   // if a user is not logged in while they are trying to access a page other than login and they weren't already logged in
   // then the current path they are trying to access will be stored in memory for redirection when they successfull log in

@@ -17,6 +17,7 @@ const useApi = () => {
         if (id !== undefined) {
           response = await axios.get(`${API_URL}/movies/${id}`, {
             headers: {
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           });
@@ -54,6 +55,7 @@ const useApi = () => {
     try {
       const response = await axios.post(`${API_URL}/movies`, movie, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
@@ -76,6 +78,7 @@ const useApi = () => {
     try {
       const response = await axios.put(`${API_URL}/movies/${id}`, movie, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
@@ -104,6 +107,7 @@ const useApi = () => {
     try {
       const response = await axios.delete(`${API_URL}/movies/${id}`, {
         headers: {
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });

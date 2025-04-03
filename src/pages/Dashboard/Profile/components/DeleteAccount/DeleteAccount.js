@@ -36,8 +36,8 @@ const DeleteAccount = () => {
                 justifyContent: 'space-around',
               }}
             >
-              <Button onClick={deleteAccount}>Yes</Button>
-              <Button onClick={closeModal}>No</Button>
+              <Button onClick={deleteAccount}>Ok</Button>
+              <Button onClick={closeModal}>Cancel</Button>
             </span>
           </div>
         </Modal>

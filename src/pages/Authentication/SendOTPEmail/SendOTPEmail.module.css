@@ -1,0 +1,36 @@
+.send-otp-email {
+  width: 90%;
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.actions {
+  text-align: center;
+}
+
+.space {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.otpContainer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.otpInput {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.otpInput:focus {
+  outline: 2px solid #230052;
+}

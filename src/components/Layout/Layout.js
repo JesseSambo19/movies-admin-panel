@@ -4,7 +4,7 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import classes from './Layout.module.css';
 
-const Layout = () => {
+export const Layout1 = () => {
   // this layout component determines how the pages of the website will be rendered
   return (
     <React.Fragment>
@@ -17,4 +17,13 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export const Layout2 = () => {
+  // this layout component determines how the pages of the website will be rendered
+  return (
+    <React.Fragment>
+      <Outlet /> {/* Renders the child route */}
+    </React.Fragment>
+  );
+};
+
+// export default Layout;
