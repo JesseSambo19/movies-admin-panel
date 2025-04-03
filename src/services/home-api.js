@@ -3,15 +3,18 @@ import { handleAxiosError } from '../utils/handleAxiosError';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
+import { useLoading } from '../store/loading-context';
 
 const useApi = () => {
+  const { setLoading } = useLoading();
   const navigate = useNavigate();
   const fetchMoviesHandler = useCallback(
-    async (id, setMovies, setIsLoading, setError) => {
-      if (id === undefined) {
-        setIsLoading(true);
-        setError(null); // to clear out any previous errors we got
-      }
+    async (id, view, setMovies, setError) => {
+      // if view is true, meaning this is for the view a movie
+      // if (id === undefined || view) {
+      setLoading(true);
+      setError(null); // to clear out any previous errors we got
+      // }
       try {
         let response;
         if (id !== undefined) {
@@ -40,18 +43,30 @@ const useApi = () => {
       } catch (error) {
         if (id === undefined) {
           setError(error.message);
+          // alert(error.response.status);
+          // if view is true, meaning this is for viewing or editing a movie
+        } else if (view) {
+          setError(error.response.status);
+          // alert(error.response.status);
         } else {
           handleAxiosError(error);
         }
       }
-      if (id === undefined) {
-        setIsLoading(false);
-      }
+      // if view is true, meaning this is for viewing or editing a movie
+      // if (id === undefined || view) {
+      setLoading(false);
+      // }
     },
-    []
+    [setLoading]
   );
 
-  const addMovieHandler = async (movie, setMovie, setInvalidInput) => {
+  const addMovieHandler = async (
+    movie,
+    setMovie,
+    setInvalidInput,
+    setIsLoading
+  ) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(`${API_URL}/movies`, movie, {
         headers: {
@@ -72,9 +87,11 @@ const useApi = () => {
     } catch (error) {
       handleAxiosError(error);
     }
+    setIsLoading(false);
   };
 
-  const editMovieHandler = async (id, movie) => {
+  const editMovieHandler = async (id, movie, setIsLoading) => {
+    setIsLoading(true);
     try {
       const response = await axios.put(`${API_URL}/movies/${id}`, movie, {
         headers: {
@@ -95,6 +112,7 @@ const useApi = () => {
       // reusable error handler function
       handleAxiosError(error);
     }
+    setIsLoading(false);
   };
 
   const deleteMovieHandler = async (
@@ -123,11 +141,32 @@ const useApi = () => {
       handleAxiosError(error);
     }
   };
+
+  const deleteViewedMovieHandler = async (id) => {
+    try {
+      const response = await axios.delete(`${API_URL}/movies/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      const data = await response.data;
+      console.log(data);
+
+      // Show success message
+      alert(`${data.message}`);
+      navigate('/fetch-movies');
+    } catch (error) {
+      handleAxiosError(error);
+    }
+  };
   return {
     fetchMoviesHandler,
     addMovieHandler,
     editMovieHandler,
     deleteMovieHandler,
+    deleteViewedMovieHandler,
   };
 };
 

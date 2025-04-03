@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   handleForgotPassword,
   handleLogin,
@@ -16,6 +16,7 @@ const AuthContext = React.createContext({
   isLoggedOut: false,
   isVerified: false,
   isCheckingAuth: true, // ✅ New state to indicate checking auth
+  isLoading: false,
   pathName: '',
   onLogout: () => {},
   onLogin: (email, password) => {},
@@ -87,7 +88,7 @@ export const AuthContextProvider = (props) => {
     console.log('removed stored path name');
   };
 
-  const loginHandler = (email, password, navigate) => {
+  const loginHandler = (email, password, navigate, setIsLoading) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
     handleLogin(
@@ -98,7 +99,8 @@ export const AuthContextProvider = (props) => {
       setIsLoggedIn,
       setIsLoggedOut,
       setIsVerified,
-      navigate
+      navigate,
+      setIsLoading
     );
   };
 
@@ -111,7 +113,8 @@ export const AuthContextProvider = (props) => {
     email,
     password,
     confirmPassword,
-    navigate
+    navigate,
+    setIsLoading
   ) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
@@ -121,13 +124,20 @@ export const AuthContextProvider = (props) => {
       return;
     }
 
-    handleRegister(name, email, password, confirmPassword, navigate);
+    handleRegister(
+      name,
+      email,
+      password,
+      confirmPassword,
+      navigate,
+      setIsLoading
+    );
   };
 
-  const forgotPasswordHandler = (email) => {
+  const forgotPasswordHandler = (email, setIsLoading, setSendLink) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
-    handleForgotPassword(email);
+    handleForgotPassword(email, setIsLoading, setSendLink);
   };
 
   const resetPasswordHandler = (
@@ -158,12 +168,12 @@ export const AuthContextProvider = (props) => {
     );
   };
 
-  const sendOtpHandler = (setSendOtp) => {
-    handleSendOtp(setSendOtp);
+  const sendOtpHandler = (setSendingOtp, setSendOtp) => {
+    handleSendOtp(setSendingOtp, setSendOtp);
   };
 
-  const verifyOtpHandler = (otpCode) => {
-    verifyOtp(otpCode, setIsVerified);
+  const verifyOtpHandler = (otpCode, setVerifyingOtp) => {
+    verifyOtp(otpCode, setIsVerified, setVerifyingOtp);
   };
 
   return (
@@ -192,4 +202,8 @@ export const AuthContextProvider = (props) => {
   );
 };
 
-export default AuthContext;
+// export default AuthContext; // old way
+export function useAuth() {
+  // custom hook
+  return useContext(AuthContext);
+}

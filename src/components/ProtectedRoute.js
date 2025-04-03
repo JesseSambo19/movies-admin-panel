@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import AuthContext from '../store/auth-context';
+import { useAuth } from '../store/auth-context';
 
 const ProtectedRoute = () => {
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
   const location = useLocation();
 
   console.log(

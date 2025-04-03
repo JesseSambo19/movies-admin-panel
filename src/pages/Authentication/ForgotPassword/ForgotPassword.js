@@ -1,15 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useContext,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
 
 import Card from '../../../components/UI/Card/Card';
 import classes from './ForgotPassword.module.css';
 import Button from '../../../components/UI/Button/Button';
-import AuthContext from '../../../store/auth-context';
+import { useAuth } from '../../../store/auth-context';
 import Input from '../../../components/UI/Input/Input';
 import {
   Link,
@@ -39,6 +33,9 @@ const ForgotPassword = () => {
   // const [emailIsValid, setEmailIsValid] = useState();
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [sendLink, setSendLink] = useState(false); // keeps track of whether user already sent an otp request
+
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -46,7 +43,7 @@ const ForgotPassword = () => {
     isValid: null,
   });
 
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
   //   const navigate = useNavigate();
 
   const emailInputRef = useRef();
@@ -131,9 +128,9 @@ const ForgotPassword = () => {
     event.preventDefault();
     // props.onLogin(emailState.value, passwordState.value);
     if (formIsValid) {
-      authCtx.onForgotPassword(emailState.value);
+      authCtx.onForgotPassword(emailState.value, setIsLoading, setSendLink);
       // Reset the email state
-      dispatchEmail({ type: 'RESET' });
+      // dispatchEmail({ type: 'RESET' });
     } else if (!emailIsValid) {
       // this targets the function that was set in the Input component's ref variable
       emailInputRef.current.focus();
@@ -163,9 +160,13 @@ const ForgotPassword = () => {
             <Button
               type="submit"
               // className={classes.btn}
-              disabled={!formIsValid}
+              disabled={!formIsValid || isLoading}
             >
-              Email Password Reset Link
+              {isLoading
+                ? 'Sending...'
+                : sendLink
+                ? 'Resend Reset Link'
+                : ' Send Reset Link'}
             </Button>
           </div>
           <span className={classes.link}>

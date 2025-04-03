@@ -1,16 +1,9 @@
-import React, {
-  useCallback,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import Card from '../../../../../components/UI/Card/Card';
 import Input from '../../../../../components/UI/Input/Input';
 import Button from '../../../../../components/UI/Button/Button';
 import classes from './ProfileInformation.module.css';
-import axiosInstance from '../../../../../utils/axios';
-
+import useProfileApi from '../../../../../services/profile-api';
 
 const nameReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
@@ -24,7 +17,10 @@ const nameReducer = (state, action) => {
 
 const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
-    return { value: action.val || '', isValid: action.val?.includes('@') || false };
+    return {
+      value: action.val || '',
+      isValid: action.val?.includes('@') || false,
+    };
   }
   if (action.type === 'INPUT_BLUR') {
     return { value: state.value, isValid: state.value?.includes('@') || false };
@@ -32,8 +28,8 @@ const emailReducer = (state, action) => {
   return { value: '', isValid: false };
 };
 
-
 const ProfileInformation = () => {
+  const { fetchUserProfile, updateUserProfile } = useProfileApi();
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [nameState, dispatchName] = useReducer(nameReducer, {
@@ -46,30 +42,8 @@ const ProfileInformation = () => {
     isValid: null,
   });
 
-  const fetchUserProfile = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get('profile');
-      const { name = '', email = '' } = response.data || {};
-  
-      dispatchName({ type: 'USER_INPUT', val: name });
-      dispatchEmail({ type: 'USER_INPUT', val: email });
-    } catch (error) {
-      console.error(error.response?.data || error.message);
-    }
-  }, []);
-  
-
-  const updateUserProfile = async (name, email) => {
-    try {
-      const response = await axiosInstance.put('profile', { name, email });
-      alert(response.data.message);
-    } catch (error) {
-      console.error(error.response.data);
-    }
-  };
-
   useEffect(() => {
-    fetchUserProfile();
+    fetchUserProfile(dispatchName, dispatchEmail);
   }, [fetchUserProfile]);
 
   const nameInputRef = useRef();

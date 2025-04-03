@@ -1,15 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useContext,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
 
 import Card from '../../../components/UI/Card/Card';
 import classes from './Register.module.css';
 import Button from '../../../components/UI/Button/Button';
-import AuthContext from '../../../store/auth-context';
+import { useAuth } from '../../../store/auth-context';
 import Input from '../../../components/UI/Input/Input';
 import {
   Link,
@@ -72,6 +66,7 @@ const Register = () => {
   // const [emailIsValid, setEmailIsValid] = useState();
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -95,7 +90,8 @@ const Register = () => {
     }
   );
 
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
+
   const navigate = useNavigate();
 
   const emailInputRef = useRef();
@@ -244,7 +240,8 @@ const Register = () => {
         emailState.value,
         passwordState.value,
         confirmPasswordState.value,
-        navigate
+        navigate,
+        setIsLoading
       );
     } else if (!nameIsValid) {
       // this targets the function that was set in the Input component's ref variable
@@ -309,9 +306,9 @@ const Register = () => {
             <Button
               type="submit"
               // className={classes.btn}
-              disabled={!formIsValid}
+              disabled={!formIsValid || isLoading}
             >
-              Register
+              {isLoading ? 'Registering...' : 'Register'}
             </Button>
           </div>
           <span className={classes.link}>

@@ -11,9 +11,11 @@ export const handleLogin = async (
   setIsLoggedIn,
   setIsLoggedOut,
   setIsVerified,
-  navigate
+  navigate,
+  setIsLoading
 ) => {
   try {
+    setIsLoading(true);
     // Attempt to log the user in
     const response = await axiosInstance.post('login', {
       email,
@@ -37,6 +39,7 @@ export const handleLogin = async (
     handleAxiosError(error);
     // alert('Invalid credentials');
   }
+  setIsLoading(false);
 };
 
 export const handleLogout = async (
@@ -66,8 +69,10 @@ export const handleRegister = async (
   email,
   password,
   password_confirmation,
-  navigate
+  navigate,
+  setIsLoading
 ) => {
+  setIsLoading(true);
   try {
     const response = await axiosInstance.post('register', {
       name,
@@ -83,9 +88,16 @@ export const handleRegister = async (
     handleAxiosError(error);
     // alert('Invalid credentials');
   }
+  setIsLoading(false);
 };
 
-export const handleForgotPassword = async (email) => {
+export const handleForgotPassword = async (
+  email,
+  setIsLoading,
+  setSendLink
+) => {
+  setIsLoading(true);
+  setSendLink(true);
   try {
     const response = await axios.post(`${API_URL}/forgot-password`, { email });
     alert(response.data.message); // Password reset link sent
@@ -94,6 +106,7 @@ export const handleForgotPassword = async (email) => {
     handleAxiosError(error);
     console.error(error);
   }
+  setIsLoading(false);
 };
 
 export const handleResetPassword = async (
@@ -101,8 +114,10 @@ export const handleResetPassword = async (
   token,
   password,
   password_confirmation,
-  navigate
+  navigate,
+  setIsLoading
 ) => {
+  setIsLoading(true);
   try {
     const response = await axios.post(`${API_URL}/reset-password`, {
       email,
@@ -117,6 +132,7 @@ export const handleResetPassword = async (
     handleAxiosError(error);
     console.error(error);
   }
+  setIsLoading(false);
 };
 
 // This should be called when the user clicks the verification link.
@@ -144,7 +160,9 @@ export const resendVerificationEmail = async (email) => {
 };
 
 // OTP
-export const handleSendOtp = async (setSendOtp) => {
+export const handleSendOtp = async (setSendingOtp, setSendOtp) => {
+  setSendingOtp(true);
+  setSendOtp(true);
   try {
     // const email = localStorage.getItem('email');
     const response = await axios.post(
@@ -168,9 +186,11 @@ export const handleSendOtp = async (setSendOtp) => {
     console.log(error);
     handleAxiosError(error);
   }
+  setSendingOtp(false);
 };
 
-export const verifyOtp = async (otpCode, setIsVerified) => {
+export const verifyOtp = async (otpCode, setIsVerified, setVerifyingOtp) => {
+  setVerifyingOtp(true);
   try {
     console.log(`Verifying OTP ${otpCode}`);
     const response = await axios.post(
@@ -199,6 +219,7 @@ export const verifyOtp = async (otpCode, setIsVerified) => {
     // setMessage('An error occurred. Please try again.');
     handleAxiosError(error);
   }
+  setVerifyingOtp(false);
 };
 
 export const handleVerifyToken = async (token, setIsLoggedIn) => {

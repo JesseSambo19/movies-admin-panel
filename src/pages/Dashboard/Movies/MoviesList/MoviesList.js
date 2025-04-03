@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Movie from './components/Movie/Movie';
 import classes from './MoviesList.module.css';
-import Card from '../../../components/UI/Card/Card';
-import Button from '../../../components/UI/Button/Button';
+import Card from '../../../../components/UI/Card/Card';
+import Button from '../../../../components/UI/Button/Button';
 import useApi from '../../../../services/home-api';
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   // custom hook
   const { fetchMoviesHandler, deleteMovieHandler } = useApi();
@@ -15,7 +15,7 @@ const MovieList = () => {
   // since I need parameters for fetching the data when pressing on the fetch movies button and loading this page with useEffect
   // I'm using this function for reusability to pass in those parameters to fetchMoviesHandler
   const onFetchMoviesHandler = useCallback(() => {
-    fetchMoviesHandler(undefined, setMovies, setIsLoading, setError);
+    fetchMoviesHandler(undefined, false, setMovies, setError);
   }, [fetchMoviesHandler]);
 
   useEffect(() => {
@@ -25,7 +25,13 @@ const MovieList = () => {
   // since I need parameters for fetching the data again after successfully deleting a record
   // I'm using this function to pass in those parameters to deleteMovieHandler
   const onDeleteMovieHandler = (movieID) => {
-    deleteMovieHandler(movieID, undefined, setMovies, setIsLoading, setError);
+    deleteMovieHandler(
+      movieID,
+      undefined,
+      setMovies,
+      setError
+      // setIsLoading,
+    );
   };
 
   let content = <p>Found no movies.</p>;
@@ -51,9 +57,9 @@ const MovieList = () => {
     content = <p>{error}</p>;
   }
 
-  if (isLoading) {
-    content = <p>Loading...</p>;
-  }
+  // if (isLoading) {
+  //   content = <p>Loading...</p>;
+  // }
   return (
     <React.Fragment>
       <Card>

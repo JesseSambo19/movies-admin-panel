@@ -1,12 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../../../../components/UI/Button/Button';
 // import classes from './DeleteAccount.module.css';
 import Card from '../../../../../components/UI/Card/Card';
-import Modal from '../../../../../components/UI/Modal/Modal';
-import ProfileContext from '../../../../../store/profile-context';
+import { useProfile } from '../../../../../store/profile-context';
+
+import DeleteModal from '../../../../../components/DeleteModal/DeleteModal';
 
 const DeleteAccount = () => {
-  const profCtx = useContext(ProfileContext);
+  const profCtx = useProfile();
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -23,25 +24,12 @@ const DeleteAccount = () => {
 
   return (
     <React.Fragment>
-      {showModal && (
-        <Modal onClose={closeModal}>
-          <div style={{ backgroundColor: 'white' }}>
-            <p style={{ textAlign: 'center' }}>
-              Are you sure you want to delete your account permanently?
-            </p>
-            <span
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}
-            >
-              <Button onClick={deleteAccount}>Ok</Button>
-              <Button onClick={closeModal}>Cancel</Button>
-            </span>
-          </div>
-        </Modal>
-      )}
+      <DeleteModal
+        showModal={showModal}
+        onClose={closeModal}
+        text="Are you sure you want to delete your account permanently?"
+        onDelete={deleteAccount}
+      />
       <Card>
         <h3>Delete Account</h3>
         <p>

@@ -9,7 +9,7 @@ import Card from '../../../../../components/UI/Card/Card';
 import Input from '../../../../../components/UI/Input/Input';
 import Button from '../../../../../components/UI/Button/Button';
 import classes from './UpdatePassword.module.css';
-import ProfileContext from '../../../../../store/profile-context';
+import {useProfile} from '../../../../../store/profile-context';
 
 // this reducer is created outside of the scope of this component because it doesn't need to interact with anything defined in the component
 // all the data which will be required by this function will be passed  into this function when it's executed by React, automatically
@@ -77,7 +77,7 @@ const UpdatePassword = () => {
     }
   );
 
-  const profCtx = useContext(ProfileContext);
+  const profCtx = useProfile();
   // const navigate = useNavigate();
 
   const currentPasswordInputRef = useRef();

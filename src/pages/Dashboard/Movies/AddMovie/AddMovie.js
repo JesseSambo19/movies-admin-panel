@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-import classes from './EditMovie.module.css';
-import Card from '../../../components/UI/Card/Card';
-import Button from '../../../components/UI/Button/Button';
-import { useParams } from 'react-router-dom';
-import useApi from '../../../services/home-api';
+import React, { useState } from 'react';
+import classes from './AddMovie.module.css';
+import Card from '../../../../components/UI/Card/Card';
+import Button from '../../../../components/UI/Button/Button';
+import useApi from '../../../../services/home-api';
 
 function AddMovie() {
+  const [isLoading, setIsLoading] = useState(false);
   // custom hook
-  const { fetchMoviesHandler, editMovieHandler } = useApi();
+  const { addMovieHandler } = useApi();
   // Controlled input states
   const [movie, setMovie] = useState({
     title: '',
@@ -24,13 +23,6 @@ function AddMovie() {
   });
 
   const [formIsValid, setFormIsValid] = useState(false);
-
-  const { id } = useParams();
-
-  useEffect(() => {
-    // fetchMoviesHandler();
-    fetchMoviesHandler(id, setMovie);
-  }, [fetchMoviesHandler, id]);
 
   function submitHandler(event) {
     event.preventDefault();
@@ -49,15 +41,17 @@ function AddMovie() {
       return;
     }
 
-    // editMovieHandler(input);
-    editMovieHandler(id, movie);
-    console.log('edited new movie');
+    // addMovieHandler(input);
+    addMovieHandler(movie, setMovie, setInvalidInput, setIsLoading);
+
+    console.log('submitted new movie');
   }
 
   const inputChangeHandler = (field, value) => {
     // setInput((prevInput) => ({ ...prevInput, [field]: value }));
     setMovie((prevMovie) => {
       const updatedMovie = { ...prevMovie, [field]: value };
+      // boolean state value is dependent on the state of the updated input fields
       setFormIsValid(
         updatedMovie.title.trim() !== '' &&
           updatedMovie.openingText.trim() !== '' &&
@@ -135,9 +129,9 @@ function AddMovie() {
         </div>
         <Button
           type="submit"
-          disabled={!formIsValid}
+          disabled={!formIsValid || isLoading}
         >
-          Edit Movie
+          {isLoading ? 'Adding...' : 'Add Movie'}
         </Button>
       </form>
     </Card>

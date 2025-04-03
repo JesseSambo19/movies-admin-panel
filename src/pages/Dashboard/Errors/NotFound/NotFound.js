@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../../../components/UI/Button/Button';
-import Center from '../../../components/UI/Center/Center';
-import Card from '../../../components/UI/Card/Card';
+import Button from '../../../../components/UI/Button/Button';
+import Center from '../../../../components/UI/Center/Center';
+import Card from '../../../../components/UI/Card/Card';
 
 const NotFoundPage = () => {
   return (

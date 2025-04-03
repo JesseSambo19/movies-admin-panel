@@ -1,5 +1,5 @@
-import React from 'react';
-import { deleteUserAccount, updateUserPassword } from '../services/profile-api';
+import React, { useContext } from 'react';
+import useProfileApi from '../services/profile-api';
 
 const ProfileContext = React.createContext({
   onFetchUserProfile: (dispatchName, dispatchEmail) => {},
@@ -16,6 +16,7 @@ const ProfileContext = React.createContext({
 });
 
 export const ProfileContextProvider = (props) => {
+  const  { deleteUserAccount, updateUserPassword } = useProfileApi();
   const fetchUserProfileHandler = async (dispatchName, dispatchEmail) => {
     fetchUserProfileHandler(dispatchName, dispatchEmail);
   };
@@ -60,4 +61,8 @@ export const ProfileContextProvider = (props) => {
   );
 };
 
-export default ProfileContext;
+// export default ProfileContext;
+
+export function useProfile() {
+  return useContext(ProfileContext);
+}

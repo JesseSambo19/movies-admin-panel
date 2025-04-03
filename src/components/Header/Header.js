@@ -1,11 +1,11 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import classes from './Header.module.css';
-import AuthContext from '../../store/auth-context';
+import { useAuth } from '../../store/auth-context';
 import { ChevronDown } from 'lucide-react';
 
 const Header = () => {
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null); // Reference for the dropdown
 

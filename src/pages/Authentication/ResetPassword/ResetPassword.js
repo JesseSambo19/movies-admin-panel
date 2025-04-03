@@ -9,7 +9,7 @@ import React, {
 import Card from '../../../components/UI/Card/Card';
 import classes from './ResetPassword.module.css';
 import Button from '../../../components/UI/Button/Button';
-import AuthContext from '../../../store/auth-context';
+import { useAuth } from '../../../store/auth-context';
 import Input from '../../../components/UI/Input/Input';
 import {
   Navigate,
@@ -85,7 +85,7 @@ const ResetPassword = () => {
     }
   );
 
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
   const navigate = useNavigate();
 
   const emailInputRef = useRef();
@@ -268,7 +268,7 @@ const ResetPassword = () => {
           <div className={classes.actions}>
             <Button
               type="submit"
-            //   className={classes.btn}
+              //   className={classes.btn}
               disabled={!formIsValid}
             >
               Reset Password

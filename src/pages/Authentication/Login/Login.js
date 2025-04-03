@@ -1,15 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-  useReducer,
-  useContext,
-  useRef,
-} from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
 
 import Card from '../../../components/UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../../../components/UI/Button/Button';
-import AuthContext from '../../../store/auth-context';
+import { useAuth } from '../../../store/auth-context';
 import Input from '../../../components/UI/Input/Input';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
@@ -42,6 +36,7 @@ const Login = () => {
   // const [enteredPassword, setEnteredPassword] = useState('');
   // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: '',
@@ -52,7 +47,8 @@ const Login = () => {
     isValid: null,
   });
 
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
+  // const { isLoading, onLogin } = useAuth();
   const navigate = useNavigate();
 
   const emailInputRef = useRef();
@@ -153,7 +149,15 @@ const Login = () => {
     event.preventDefault();
     // props.onLogin(emailState.value, passwordState.value);
     if (formIsValid) {
-      authCtx.onLogin(emailState.value, passwordState.value, navigate);
+      // setIsLoading(true);
+      // authCtx.onLogin(
+      authCtx.onLogin(
+        emailState.value,
+        passwordState.value,
+        navigate,
+        setIsLoading
+      );
+      // setIsLoading(false);
     } else if (!emailIsValid) {
       // this targets the function that was set in the Input component's ref variable
       emailInputRef.current.focus();
@@ -200,9 +204,9 @@ const Login = () => {
             <Button
               type="submit"
               // className={classes.btn}
-              disabled={!formIsValid}
+              disabled={!formIsValid || isLoading}
             >
-              Login
+              {isLoading ? 'Authenticating...' : 'Login'}
             </Button>
           </div>
           <span className={classes.links}>

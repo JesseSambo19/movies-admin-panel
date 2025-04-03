@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import Card from '../../../components/UI/Card/Card';
 import classes from './SendOTPEmail.module.css';
 import Button from '../../../components/UI/Button/Button';
-import AuthContext from '../../../store/auth-context';
+import { useAuth } from '../../../store/auth-context';
 
 import Center from '../../../components/UI/Center/Center';
 
 const SendVerificationEmail = () => {
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
   const [otp, setOtp] = useState(['', '', '', '', '', '']); // Stores the OTP digits
   const [sendOtp, setSendOtp] = useState(false); // keeps track of whether user already sent an otp request
   const [sendingOtp, setSendingOtp] = useState(false); // keeps track of sending state
@@ -40,15 +40,11 @@ const SendVerificationEmail = () => {
   };
 
   const handleSendOtp = () => {
-    setSendingOtp(true);
-    authCtx.onSendOtp(setSendOtp);
-    setSendingOtp(false);
+    authCtx.onSendOtp(setSendingOtp, setSendOtp);
   };
 
   const verifyOtp = (otpCode) => {
-    setVerifyingOtp(true);
-    authCtx.onVerifyOtp(otpCode);
-    setVerifyingOtp(false);
+    authCtx.onVerifyOtp(otpCode, setVerifyingOtp);
   };
 
   // Handles OTP submission

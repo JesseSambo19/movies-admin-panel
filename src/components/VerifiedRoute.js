@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import AuthContext from '../store/auth-context';
+import React from 'react';
+import { useAuth } from '../store/auth-context';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const VerifiedRoute = () => {
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
 
   if (authCtx.isCheckingAuth) {
     return <div>Loading...</div>; // ✅ Prevent rendering until auth check is complete
