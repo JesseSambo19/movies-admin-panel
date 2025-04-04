@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import classes from './Header.module.css';
 import { useAuth } from '../../store/auth-context';
 import { ChevronDown } from 'lucide-react';
+import Logo from '../Logo/Logo';
 
 const Header = () => {
   const authCtx = useAuth();
@@ -41,11 +42,8 @@ const Header = () => {
     <nav className={classes.navbar}>
       <div>
         <span className={classes.logo}>
-          <Link
-            to="/home"
-            style={{ textDecoration: 'none' }}
-          >
-            <h1>Movie App</h1>
+          <Link to="/home">
+            <Logo />
           </Link>
         </span>
         <ul className={classes.list}>

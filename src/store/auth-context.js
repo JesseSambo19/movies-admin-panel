@@ -145,7 +145,8 @@ export const AuthContextProvider = (props) => {
     token,
     password,
     confirmPassword,
-    navigate
+    navigate,
+    setIsLoading
   ) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
@@ -161,7 +162,8 @@ export const AuthContextProvider = (props) => {
       token,
       password,
       confirmPassword,
-      navigate
+      navigate,
+      setIsLoading
       // getPathNameHandler,
       // setIsLoggedIn,
       // setIsLoggedOut

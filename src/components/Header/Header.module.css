@@ -19,9 +19,9 @@ nav div {
   padding-top: 0px;
 }
 
-.logo h1 {
-  color: white;
-  cursor: pointer;
+.logo img {
+  width: 50px;
+  margin-top: 20px;
 }
 
 /* .list {

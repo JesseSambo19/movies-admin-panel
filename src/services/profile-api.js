@@ -23,7 +23,8 @@ const useProfileApi = () => {
     [setLoading]
   );
 
-  const updateUserProfile = async (name, email) => {
+  const updateUserProfile = async (name, email, setIsLoading) => {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.put('profile', { name, email });
       alert(response.data.message);
@@ -31,6 +32,7 @@ const useProfileApi = () => {
       handleAxiosError(error);
       console.error(error.response.data);
     }
+    setIsLoading(false);
   };
 
   const updateUserPassword = async (
@@ -39,8 +41,10 @@ const useProfileApi = () => {
     confirmNewPassword,
     dispatchCurrentPassword,
     dispatchNewPassword,
-    dispatchConfirmNewPassword
+    dispatchConfirmNewPassword,
+    setIsLoading
   ) => {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.put('update-password', {
         current_password: currentPassword,
@@ -55,6 +59,7 @@ const useProfileApi = () => {
       handleAxiosError(error);
       console.error(error.response.data);
     }
+    setIsLoading(false);
   };
 
   const deleteUserAccount = async (closeModal) => {
