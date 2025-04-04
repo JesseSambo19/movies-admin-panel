@@ -1,6 +1,5 @@
 import React from 'react';
 import { AuthContextProvider } from './auth-context';
-import { ProfileContextProvider } from './profile-context';
 import { LoadingProvider } from './loading-context';
 
 // this component will serve to be the main app provider which will wrap all providers of its child
@@ -9,9 +8,7 @@ import { LoadingProvider } from './loading-context';
 const AppContextProvider = (props) => {
   return (
     <LoadingProvider>
-      <AuthContextProvider>
-        <ProfileContextProvider>{props.children}</ProfileContextProvider>
-      </AuthContextProvider>
+      <AuthContextProvider>{props.children}</AuthContextProvider>
     </LoadingProvider>
   );
 };

@@ -50,18 +50,19 @@ const SendVerificationEmail = () => {
   // Handles OTP submission
   const handleVerifyOtp = () => {
     const otpCode = otp.join('');
+    verifyOtp(otpCode);
 
-    if (otpCode.length === 6) {
-      verifyOtp(otpCode);
-    } else {
-      alert('Please enter a valid 6-digit OTP.');
-    }
+    // if (otpCode.length === 6) {
+    //   verifyOtp(otpCode);
+    // } else {
+    //   alert('Please enter a valid 6-digit OTP.');
+    // }
   };
 
   return (
     <Center>
       <Card className={classes['send-otp-email']}>
-        {sendOtp ? (
+        {sendOtp && !sendingOtp ? (
           <p>
             Enter the 6-digit OTP sent to your email to verify your account and
             access the dashboard.
@@ -90,7 +91,8 @@ const SendVerificationEmail = () => {
 
         <div className={classes.actions}>
           <Button
-            disabled={verifyingOtp}
+            // if verifying otp code or input doesn't have 6 digits then the verify otp button will be disabled
+            disabled={verifyingOtp || otp.join('').length < 6}
             onClick={handleVerifyOtp}
           >
             {verifyingOtp ? 'Verifying...' : 'Verify OTP'}

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Button from '../../../../../components/UI/Button/Button';
 // import classes from './DeleteAccount.module.css';
 import Card from '../../../../../components/UI/Card/Card';
-import { useProfile } from '../../../../../store/profile-context';
 
 import DeleteModal from '../../../../../components/DeleteModal/DeleteModal';
+import useProfileApi from '../../../../../services/profile-api';
 
 const DeleteAccount = () => {
-  const profCtx = useProfile();
+  const { deleteUserAccount } = useProfileApi();
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -19,7 +19,7 @@ const DeleteAccount = () => {
   };
 
   const deleteAccount = () => {
-    profCtx.onDeleteUserAccount(closeModal);
+    deleteUserAccount(closeModal);
   };
 
   return (

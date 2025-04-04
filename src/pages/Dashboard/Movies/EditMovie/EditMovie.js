@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 import classes from './EditMovie.module.css';
 import Card from '../../../../components/UI/Card/Card';
 import Button from '../../../../components/UI/Button/Button';
 import { useParams } from 'react-router-dom';
-import useApi from '../../../../services/home-api';
+import useMoviesApi from '../../../../services/movies-api';
 import Forbidden from '../../Errors/Forbidden/Forbidden';
 import NotFound from '../../Errors/NotFound/NotFound';
 
@@ -12,7 +11,7 @@ function AddMovie() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   // custom hook
-  const { fetchMoviesHandler, editMovieHandler } = useApi();
+  const { fetchMoviesHandler, editMovieHandler } = useMoviesApi();
   // Controlled input states
   const [movie, setMovie] = useState({
     title: '',
@@ -32,14 +31,7 @@ function AddMovie() {
   const { id } = useParams();
 
   useEffect(() => {
-    // fetchMoviesHandler();
-    fetchMoviesHandler(
-      id,
-      true,
-      setMovie,
-      setError
-      // setIsLoading
-    );
+    fetchMoviesHandler(id, true, setMovie, setError);
   }, [fetchMoviesHandler, id]);
 
   function submitHandler(event) {

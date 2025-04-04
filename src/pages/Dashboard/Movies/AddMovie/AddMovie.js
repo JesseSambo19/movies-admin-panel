@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import classes from './AddMovie.module.css';
 import Card from '../../../../components/UI/Card/Card';
 import Button from '../../../../components/UI/Button/Button';
-import useApi from '../../../../services/home-api';
+import useMoviesApi from '../../../../services/movies-api';
 
 function AddMovie() {
   const [isLoading, setIsLoading] = useState(false);
   // custom hook
-  const { addMovieHandler } = useApi();
+  const { addMovieHandler } = useMoviesApi();
   // Controlled input states
   const [movie, setMovie] = useState({
     title: '',

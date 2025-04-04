@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import Button from '../../../../components/UI/Button/Button';
 import Card from '../../../../components/UI/Card/Card';
 import DeleteModal from '../../../../components/DeleteModal/DeleteModal';
-import useApi from '../../../../services/home-api';
+import useMoviesApi from '../../../../services/movies-api';
 import Forbidden from '../../Errors/Forbidden/Forbidden';
 import NotFoundPage from '../../Errors/NotFound/NotFound';
 
@@ -15,7 +15,7 @@ const ViewMovie = () => {
   // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   // custom hook
-  const { fetchMoviesHandler, deleteViewedMovieHandler } = useApi();
+  const { fetchMoviesHandler, deleteViewedMovieHandler } = useMoviesApi();
   // Controlled input states
   const [movie, setMovie] = useState({
     title: '',
@@ -37,14 +37,7 @@ const ViewMovie = () => {
   };
 
   useEffect(() => {
-    // fetchMoviesHandler();
-    fetchMoviesHandler(
-      id,
-      true,
-      setMovie,
-      setError
-      // setIsLoading
-    );
+    fetchMoviesHandler(id, true, setMovie, setError);
   }, [fetchMoviesHandler, id]);
 
   const formattedDate1 = new Date(movie.created_at).toLocaleString(); // converts into a more readable format

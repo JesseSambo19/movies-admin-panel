@@ -1,15 +1,9 @@
-import React, {
-  useContext,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import Card from '../../../../../components/UI/Card/Card';
 import Input from '../../../../../components/UI/Input/Input';
 import Button from '../../../../../components/UI/Button/Button';
 import classes from './UpdatePassword.module.css';
-import {useProfile} from '../../../../../store/profile-context';
+import useProfileApi from '../../../../../services/profile-api';
 
 // this reducer is created outside of the scope of this component because it doesn't need to interact with anything defined in the component
 // all the data which will be required by this function will be passed  into this function when it's executed by React, automatically
@@ -51,6 +45,7 @@ const confirmNewPasswordReducer = (state, action) => {
 };
 
 const UpdatePassword = () => {
+  const { updateUserPassword } = useProfileApi();
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [currentPasswordState, dispatchCurrentPassword] = useReducer(
@@ -76,9 +71,6 @@ const UpdatePassword = () => {
       isValid: null,
     }
   );
-
-  const profCtx = useProfile();
-  // const navigate = useNavigate();
 
   const currentPasswordInputRef = useRef();
   const newPasswordInputRef = useRef();
@@ -175,7 +167,7 @@ const UpdatePassword = () => {
       return;
     }
 
-    profCtx.onUpdateUserPassword(
+    updateUserPassword(
       currentPasswordState.value,
       newPasswordState.value,
       confirmNewPasswordState.value,

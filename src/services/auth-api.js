@@ -162,7 +162,6 @@ export const resendVerificationEmail = async (email) => {
 // OTP
 export const handleSendOtp = async (setSendingOtp, setSendOtp) => {
   setSendingOtp(true);
-  setSendOtp(true);
   try {
     // const email = localStorage.getItem('email');
     const response = await axios.post(

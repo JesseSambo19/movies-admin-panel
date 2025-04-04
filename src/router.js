@@ -15,7 +15,7 @@ import ResetPassword from './pages/Authentication/ResetPassword/ResetPassword';
 import SendVerificationEmail from './pages/Authentication/SendOTPEmail/SendOTPEmail';
 import Profile from './pages/Dashboard/Profile/Profile';
 import { useAuth } from './store/auth-context';
-import Redirect from './components/RedirectToLogin';
+import Redirect from './components/Redirect';
 
 const useRouter = () => {
   const authCtx = useAuth();

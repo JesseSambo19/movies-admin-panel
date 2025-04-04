@@ -5,11 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
 import { useLoading } from '../store/loading-context';
 
-const useApi = () => {
+const useMoviesApi = () => {
   const { setLoading } = useLoading();
   const navigate = useNavigate();
+
   const fetchMoviesHandler = useCallback(
-    async (id, view, setMovies, setError) => {
+    async (
+      id,
+      view,
+      setMovies,
+      setError,
+      page,
+      setCurrentPage,
+      setLastPage
+    ) => {
       // if view is true, meaning this is for the view a movie
       // if (id === undefined || view) {
       setLoading(true);
@@ -25,7 +34,8 @@ const useApi = () => {
             },
           });
         } else {
-          response = await axios.get(`${API_URL}/movies`, {
+          // more dynamic pagination links provided by Laravel
+          response = await axios.get(`${API_URL}/movies?page=${page}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
@@ -39,6 +49,8 @@ const useApi = () => {
           setMovies(data);
         } else {
           setMovies(data.data);
+          setCurrentPage(data.current_page);
+          setLastPage(data.last_page); // Total pages
         }
       } catch (error) {
         if (id === undefined) {
@@ -115,13 +127,7 @@ const useApi = () => {
     setIsLoading(false);
   };
 
-  const deleteMovieHandler = async (
-    id,
-    undefinedID,
-    setMovies,
-    setIsLoading,
-    setError
-  ) => {
+  const deleteMovieHandler = async (id, undefinedID, setMovies, setError) => {
     try {
       const response = await axios.delete(`${API_URL}/movies/${id}`, {
         headers: {
@@ -136,7 +142,7 @@ const useApi = () => {
       // Show success message
       alert(`${data.message}`);
 
-      fetchMoviesHandler(undefinedID, setMovies, setIsLoading, setError);
+      fetchMoviesHandler(undefinedID, setMovies, setError);
     } catch (error) {
       handleAxiosError(error);
     }
@@ -170,4 +176,4 @@ const useApi = () => {
   };
 };
 
-export default useApi;
+export default useMoviesApi;
