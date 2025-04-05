@@ -5,7 +5,7 @@ const Card = (props) => {
   return (
     <div
       className={`${classes.card} ${props.className}`}
-      style={props.styles}
+      style={props.style}
     >
       {props.children}
     </div>

@@ -2,7 +2,7 @@ nav {
   /* position: relative; */
   background-color: #230052;
   padding: 0px 50px;
-  /* height: 70px; */
+  height: 80px;
 }
 
 nav div {
@@ -10,90 +10,37 @@ nav div {
   justify-content: space-between;
 }
 
-.active {
-  font-weight: bold; /* Makes active link bold */
-  color: yellow !important; /* Change color of active link */
-}
-
-.logo {
-  padding-top: 0px;
-}
-
 .logo img {
   width: 50px !important;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
-/* .list {
+.nav-burger-menu {
+  display: none;
+  color: white;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+.nav-burger-menu:hover {
+  color: yellow;
+}
+
+.close {
+  /* display: absolute;
+  right: 0; */
   float: right;
-} */
-
-.list li {
-  display: inline-block;
-  padding: 0px 30px;
-}
-
-.list li a {
-  color: white;
-  text-decoration: none;
-}
-
-.list li a:hover {
-  color: yellow;
-  transition: all 0.3 ease-in-out;
-}
-
-.dropdown {
+  cursor: pointer;
   color: white;
 }
 
-.dropdown:hover {
-  color: yellow;
-  transition: all 0.3 ease-in-out;
-  cursor: pointer;
-}
-
-.position-relative {
-  position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  right: 10;
-  background-color: white;
-  padding: 5px 0px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-}
-
-.dropdown-menu li {
-  height: 50px;
-  color: #230052;
-}
-
-.dropdown-menu a li {
-  /* height: 50px;
-  width: 100%;
-  color: #230052;
-  padding: 10px; */
-
-  height: 50px;
-  color: #230052;
-}
-
-.dropdown-menu li:hover {
-  background-color: #230052;
-  width: 100%;
-  color: yellow;
-  cursor: pointer;
-}
-
-.dropdown-menu a li:hover {
-  background-color: #230052;
+.close:hover {
   color: yellow;
 }
 
-hr {
-  margin: 0px;
+@media screen and (max-width: 800px) {
+  /* Styles to apply when the screen width is 768px or less */
+  .nav-burger-menu {
+    display: block;
+  }
 }

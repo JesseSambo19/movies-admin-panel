@@ -1,0 +1,145 @@
+.active {
+  font-weight: bold; /* Makes active link bold */
+  color: yellow !important; /* Change color of active link */
+}
+
+.list-desktop li {
+  display: inline-block;
+  padding: 0px 30px;
+}
+
+.list-desktop li a {
+  color: white;
+  text-decoration: none;
+}
+
+.list-desktop li a:hover {
+  color: yellow;
+  transition: all 0.3 ease-in-out;
+}
+
+.dropdown-desktop {
+  color: white;
+}
+
+.dropdown-desktop:hover {
+  color: yellow;
+  transition: all 0.3 ease-in-out;
+  cursor: pointer;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.dropdown-menu-desktop {
+  position: absolute;
+  right: 10;
+  background-color: white;
+  padding: 5px 0px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu-desktop li {
+  height: 50px;
+  color: #230052;
+}
+
+.dropdown-menu-desktop a li {
+  /* height: 50px;
+    width: 100%;
+    color: #230052;
+    padding: 10px; */
+
+  height: 50px;
+  color: #230052;
+}
+
+.dropdown-menu-desktop li:hover {
+  background-color: #230052;
+  width: 100%;
+  color: yellow;
+  cursor: pointer;
+}
+
+.dropdown-menu-desktop a li:hover {
+  background-color: #230052;
+  color: yellow;
+}
+
+.list-mobile li {
+  display: inline-block;
+  padding: 20px 0px;
+}
+
+.list-mobile li a {
+  color: white;
+  text-decoration: none;
+}
+
+.list-mobile li a:hover {
+  color: yellow;
+  transition: all 0.3 ease-in-out;
+}
+
+.dropdown-mobile {
+  color: white;
+  margin-top: 0px;
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+}
+
+.dropdown-mobile:hover {
+  color: yellow;
+  transition: all 0.3 ease-in-out;
+  cursor: pointer;
+}
+
+.dropdown-menu-mobile {
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  padding: 5px 0px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu-mobile li {
+  height: 0px;
+  color: #230052;
+  padding-bottom: 60px;
+}
+
+.dropdown-menu-mobile a {
+  height: 80px;
+  color: #230052 !important;
+  padding-top: 30px;
+}
+
+.dropdown-menu-mobile li:hover {
+  background-color: #230052;
+  width: 100%;
+  color: yellow;
+  cursor: pointer;
+}
+
+.dropdown-menu-mobile a:hover {
+  background-color: #230052;
+  color: yellow !important;
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  /* Styles to apply when the screen width is 768px or less */
+  .list-desktop {
+    display: none;
+  }
+  .list-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+}

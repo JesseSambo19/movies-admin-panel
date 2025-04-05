@@ -60,7 +60,7 @@ export const handleLogout = async (
     alert(response.data.message);
   } catch (error) {
     handleAxiosError(error);
-    alert('Logout failed');
+    // alert('Logout failed');
   }
 };
 

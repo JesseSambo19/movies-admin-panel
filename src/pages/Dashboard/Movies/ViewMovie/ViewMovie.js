@@ -67,10 +67,10 @@ const ViewMovie = () => {
           <Card>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <p style={{ textAlign: 'left' }}>
-                <b>Date Created:</b> {formattedDate1}
+                <b>Created:</b> {formattedDate1}
               </p>
               <p style={{ textAlign: 'left' }}>
-                <b>Date Updated:</b> {formattedDate2}
+                <b>Updated:</b> {formattedDate2}
               </p>
             </div>
             <li className={classes.movie}>

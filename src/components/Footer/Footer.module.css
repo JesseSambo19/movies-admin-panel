@@ -9,3 +9,10 @@ footer p {
     text-align: center;
     padding-top: 5px;
 }
+
+@media screen and (max-width: 410px) {
+  /* Styles to apply when the screen width is 768px or less */
+  footer {
+    height: 70px;
+  }
+}

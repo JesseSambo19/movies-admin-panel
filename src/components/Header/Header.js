@@ -1,14 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classes from './Header.module.css';
 import { useAuth } from '../../store/auth-context';
-import { ChevronDown } from 'lucide-react';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import Logo from '../Logo/Logo';
+import Modal from '../UI/Modal/Modal';
+import Card from '../UI/Card/Card';
+import Links from './components/Links/Links';
 
 const Header = () => {
   const authCtx = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null); // Reference for the dropdown
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  const dropdownDesktopRef = useRef(null); // Reference for the dropdown
+  const dropdownMobileRef = useRef(null); // Reference for the dropdown
 
   const openDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -18,23 +24,43 @@ const Header = () => {
     setShowDropdown(false);
   };
 
+  const closeModal = () => {
+    setShowMobileMenu(false);
+  };
+
   const handleLogout = () => {
-    closeDropdown();
+    // closeDropdown();
     authCtx.onLogout();
   };
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownDesktopRef.current &&
+        !dropdownDesktopRef.current.contains(event.target)
+      ) {
+        closeDropdown();
+      }
+      if (
+        dropdownMobileRef.current &&
+        !dropdownMobileRef.current.contains(event.target)
+      ) {
         closeDropdown();
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 800);
+    };
 
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the listener when the component unmounts
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -46,59 +72,53 @@ const Header = () => {
             <Logo />
           </Link>
         </span>
-        <ul className={classes.list}>
-          <li>
-            <NavLink
-              to="/home"
-              className={({ isActive }) => (isActive ? classes.active : '')}
+        <Links
+          className1="list-desktop"
+          className2="dropdown-desktop"
+          className3="dropdown-menu-desktop"
+          mobile={false}
+          dropdownRef={dropdownDesktopRef}
+          onCloseModal={closeModal}
+          onOpenDropdown={openDropdown}
+          onCloseDropdown={closeDropdown}
+          onHandleLogout={handleLogout}
+          userName={authCtx.userName}
+          showDropdown={showDropdown}
+        />
+        <div
+          className={classes['nav-burger-menu']}
+          onClick={() => setShowMobileMenu((prev) => !prev)}
+        >
+          <AiOutlineMenu size={20} />
+        </div>
+        {isMobile && showMobileMenu && (
+          <Modal onClose={closeModal}>
+            <Card
+              style={{ backgroundColor: '#230052' }}
+              className={classes['position-relative']}
             >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/fetch-movies"
-              className={({ isActive }) => (isActive ? classes.active : '')}
-            >
-              Fetch Movies
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/add-movie"
-              className={({ isActive }) => (isActive ? classes.active : '')}
-            >
-              Add Movie
-            </NavLink>
-          </li>
-          <li
-            ref={dropdownRef}
-            className={classes['position-relative']}
-          >
-            <p
-              className={classes.dropdown}
-              onClick={openDropdown}
-            >
-              {authCtx.userName}
-              <span style={{ paddingTop: '100px', paddingLeft: '10px' }}>
-                <ChevronDown size={16} />
-              </span>
-            </p>
-            {showDropdown && (
-              <ul className={classes['dropdown-menu']}>
-                <Link
-                  to="/profile"
-                  onClick={closeDropdown}
-                >
-                  <li style={{ paddingTop: '15px' }}>Profile</li>
-                </Link>
-                <li onClick={handleLogout}>
-                  <p>Logout</p>
-                </li>
-              </ul>
-            )}
-          </li>
-        </ul>
+              <div
+                className={classes.close}
+                onClick={() => setShowMobileMenu((prev) => !prev)}
+              >
+                <AiOutlineClose size={20} />
+              </div>
+              <Links
+                className1="list-mobile"
+                className2="dropdown-mobile"
+                className3="dropdown-menu-mobile"
+                mobile={true}
+                dropdownRef={dropdownMobileRef}
+                onCloseModal={closeModal}
+                onOpenDropdown={openDropdown}
+                onCloseDropdown={closeDropdown}
+                onHandleLogout={handleLogout}
+                userName={authCtx.userName}
+                showDropdown={showDropdown}
+              />
+            </Card>
+          </Modal>
+        )}
       </div>
     </nav>
   );
