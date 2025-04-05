@@ -1,23 +1,30 @@
 export const handleAxiosError = (error) => {
-  // production
-  // alert(`Error: ${error.message}`);
-  alert(`Error: ${error.response.data.message || 'Something went wrong!'}`);
+  // Log full details for devs or monitoring tools
+  console.error('Axios error:', error);
 
-  // development
-  // if (error.response) {
-  //   // Server responded with an error status (4xx, 5xx)
-  //   console.error('Error Response:', error.response.data);
-  //   console.error('Status Code:', error.response.status);
-  //   console.error('Headers:', error.response.headers);
+  // Graceful message for the user
+  let message = 'Something went wrong. Please try again later.';
 
-  //   alert(`Error: ${error.response.data.message || 'Something went wrong!'}`);
-  // } else if (error.request) {
-  //   // Request was sent but no response received
-  //   console.error('No Response:', error.request);
-  //   alert('No response from server. Please check your backend.');
-  // } else {
-  //   // Other errors (e.g., network error, client-side issue)
-  //   console.error('Axios Error:', error.message);
-  //   alert(`Request failed: ${error.message}`);
-  // }
+  if (error.response) {
+    const status = error.response.status;
+
+    // Specific status code handling
+    if (status === 404) {
+      message = 'The service is currently unavailable.';
+    } else if (status === 401 || status === 403) {
+      message = 'You are not authorized.';
+    } else if (status === 400 || status === 422) {
+      // Show backend error messages for expected client-side issues
+      message = error.response.data?.message || 'Invalid input.';
+    } else if (status >= 500 && status < 600) {
+      message = 'A server error occurred.';
+    }
+  } else if (error.request) {
+    message = 'No response from server. Check your internet connection.';
+  } else {
+    message = 'An error occurred while sending the request.';
+  }
+
+  alert(`Error: ${message}`);
 };
+
