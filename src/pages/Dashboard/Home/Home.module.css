@@ -1,29 +1,20 @@
-.section {
-  margin: 1rem auto;
+.home {
   width: 90%;
-  max-width: 40rem;
-  text-align: center;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
 }
 
-.section button {
-  font: inherit;
-  cursor: pointer;
-  background: #230052;
-  border: 1px solid #230052;
+.welcome-text {
   color: white;
-  padding: 0.75rem 2rem;
-  border-radius: 20px;
+  font-size: 50px;
 }
 
-.section button:focus {
-  outline: none;
+.subtitle {
+  color: white;
+  font-size: larger;
 }
 
-.section button:hover,
-.section button:active {
-  background-color: #460897;
-  border-color: #460897;
+@media screen and (max-width: 700px) {
+  /* Styles to apply when the screen width is 768px or less */
+  .welcome-text {
+    font-size: 40px;
+  }
 }

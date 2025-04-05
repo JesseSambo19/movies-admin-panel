@@ -1,123 +1,23 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import MoviesList from './components/MoviesList/MoviesList';
-import AddMovie from './components/AddMovie/AddMovie';
+import React from 'react';
+import { useAuth } from '../../../store/auth-context';
+import Center from '../../../components/UI/Center/Center';
 import classes from './Home.module.css';
 
 const Home = () => {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchMoviesHandler = useCallback(async () => {
-    setIsLoading(true);
-    setError(null); // to clear out any previous errors we got
-    try {
-      // const response = await axios.get('https://swapi.dev/api/films/', {});
-      const response = await axios.get(
-        'https://react-http-92529-default-rtdb.firebaseio.com/movies.json'
-      );
-
-      const data = await response.data;
-
-      //     // const transformedMovies = data.map((movieData) => {
-      //     //   return {
-      //     //     id: movieData.episode_id,
-      //     //     title: movieData.title,
-      //     //     openingText: movieData.opening_crawl,
-      //     //     releaseDate: movieData.release_date,
-      //     //   };
-      //     // });
-      //     // setMovies(transformedMovies);
-
-      const loadedMovies = [];
-
-      for (const key in data) {
-        loadedMovies.push({
-          id: key,
-          title: data[key].title,
-          openingText: data[key].openingText,
-          releaseDate: data[key].releaseDate,
-        });
-      }
-      setMovies(loadedMovies);
-    } catch (error) {
-      setError(error.message);
-    }
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    fetchMoviesHandler();
-  }, [fetchMoviesHandler]);
-
-  const addMovieHandler = async (movie) => {
-    try {
-      const response = await axios.post(
-        'https://react-http-92529-default-rtdb.firebaseio.com/movies.json',
-        movie
-      );
-      const data = await response.data;
-      console.log(data);
-      fetchMoviesHandler();
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  // eslint-disable-next-line
-  const editMovieHandler = async (movie) => {
-    try {
-      const response = await axios.put(
-        `https://react-http-92529-default-rtdb.firebaseio.com/movies.json/${movie.id}`,
-        movie
-      );
-      const data = await response.data;
-      console.log(data);
-      fetchMoviesHandler();
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  // eslint-disable-next-line
-  const deleteMovieHandler = async (movie) => {
-    try {
-      const response = await axios.delete(
-        `https://react-http-92529-default-rtdb.firebaseio.com/movies.json/${movie.id}`
-      );
-      const data = await response.data;
-      console.log(data);
-      fetchMoviesHandler();
-    } catch (error) {
-      alert(error);
-    }
-  };
-
-  let content = <p>Found no movies.</p>;
-
-  if (movies.length > 0) {
-    content = <MoviesList movies={movies} />;
-  }
-
-  if (error) {
-    content = <p>{error}</p>;
-  }
-
-  if (isLoading) {
-    content = <p>Loading...</p>;
-  }
-
+  const authCtx = useAuth();
   return (
-    <React.Fragment>
-      <section className={classes.section}>
-        <AddMovie onAddMovie={addMovieHandler} />
-      </section>
-      <section className={classes.section}>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
-      </section>
-      <section className={classes.section}>{content}</section>
-    </React.Fragment>
+    <Center>
+      <div className={classes.home}>
+        <center>
+          <h1 className={classes['welcome-text']}>
+            Welcome, {authCtx.userName}!
+          </h1>
+          <p className={classes.subtitle}>
+            Start managing your movie collection with ease.
+          </p>
+        </center>
+      </div>
+    </Center>
   );
 };
 
