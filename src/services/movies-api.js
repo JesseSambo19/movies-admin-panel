@@ -127,7 +127,16 @@ const useMoviesApi = () => {
     setIsLoading(false);
   };
 
-  const deleteMovieHandler = async (id, undefinedID, setMovies, setError) => {
+  const deleteMovieHandler = async (
+    id,
+    undefinedID,
+    view,
+    setMovies,
+    setError,
+    page,
+    setCurrentPage,
+    setLastPage
+  ) => {
     try {
       const response = await axios.delete(`${API_URL}/movies/${id}`, {
         headers: {
@@ -142,7 +151,15 @@ const useMoviesApi = () => {
       // Show success message
       alert(`${data.message}`);
 
-      fetchMoviesHandler(undefinedID, setMovies, setError);
+      fetchMoviesHandler(
+        undefinedID,
+        view,
+        setMovies,
+        setError,
+        page,
+        setCurrentPage,
+        setLastPage
+      );
     } catch (error) {
       handleAxiosError(error);
     }

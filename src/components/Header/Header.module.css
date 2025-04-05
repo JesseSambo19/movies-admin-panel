@@ -20,7 +20,7 @@ nav div {
 }
 
 .logo img {
-  width: 50px;
+  width: 50px !important;
   margin-top: 20px;
 }
 

@@ -11,15 +11,28 @@
 
 .space {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 30px;
+}
+
+.btn {
+  background: none;
+  border: none;
+  color: #230052;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: none !important;
+  border: none !important;
 }
 
 .otpContainer {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin: 10px 0;
+  margin: 20px 0;
 }
 
 .otpInput {

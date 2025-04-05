@@ -8,6 +8,7 @@ import Input from '../../../components/UI/Input/Input';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
+import Logo from '../../../components/Logo/Logo';
 
 const Login = () => {
   const {
@@ -104,29 +105,33 @@ const Login = () => {
   return (
     <React.Fragment>
       <Center>
-        <Card className={classes.login}>
-          <form onSubmit={submitHandler}>
-            <Input
-              ref={emailInputRef}
-              id="email"
-              label="E-Mail"
-              type="email"
-              isValid={emailIsValid}
-              value={emailState.value}
-              onChange={emailChangeHandler}
-              onBlur={validateEmailHandler}
-            />
-            <Input
-              ref={passwordInputRef}
-              id="password"
-              label="Password"
-              type="password"
-              isValid={passwordIsValid}
-              value={passwordState.value}
-              onChange={passwordChangeHandler}
-              onBlur={validatePasswordHandler}
-            />
-            {/* <Input
+        <div style={{ width: '100%' }}>
+          <center>
+            <Logo />
+          </center>
+          <Card className={classes.login}>
+            <form onSubmit={submitHandler}>
+              <Input
+                ref={emailInputRef}
+                id="email"
+                label="E-Mail"
+                type="email"
+                isValid={emailIsValid}
+                value={emailState.value}
+                onChange={emailChangeHandler}
+                onBlur={validateEmailHandler}
+              />
+              <Input
+                ref={passwordInputRef}
+                id="password"
+                label="Password"
+                type="password"
+                isValid={passwordIsValid}
+                value={passwordState.value}
+                onChange={passwordChangeHandler}
+                onBlur={validatePasswordHandler}
+              />
+              {/* <Input
             ref={passwordInputRef}
             id="password"
             label="Remember me"
@@ -136,21 +141,22 @@ const Login = () => {
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           /> */}
-            <div className={classes.actions}>
-              <Button
-                type="submit"
-                // className={classes.btn}
-                disabled={!formIsValid || isLoading}
-              >
-                {isLoading ? 'Authenticating...' : 'Login'}
-              </Button>
-            </div>
-            <span className={classes.links}>
-              <Link to="/register">Don't have an account?</Link>
-              <Link to="/forgot-password">Forgot your password?</Link>
-            </span>
-          </form>
-        </Card>
+              <div className={classes.actions}>
+                <Button
+                  type="submit"
+                  // className={classes.btn}
+                  disabled={!formIsValid || isLoading}
+                >
+                  {isLoading ? 'Authenticating...' : 'Login'}
+                </Button>
+              </div>
+              <span className={classes.links}>
+                <Link to="/register">Don't have an account?</Link>
+                <Link to="/forgot-password">Forgot your password?</Link>
+              </span>
+            </form>
+          </Card>
+        </div>
       </Center>
     </React.Fragment>
   );

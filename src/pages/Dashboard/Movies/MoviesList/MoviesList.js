@@ -36,7 +36,16 @@ const MovieList = () => {
   // since I need parameters for fetching the data again after successfully deleting a record
   // I'm using this function to pass in those parameters to deleteMovieHandler
   const onDeleteMovieHandler = (movieID) => {
-    deleteMovieHandler(movieID, undefined, setMovies, setError);
+    deleteMovieHandler(
+      movieID,
+      undefined,
+      false,
+      setMovies,
+      setError,
+      currentPage,
+      setCurrentPage,
+      setLastPage
+    );
   };
 
   let content = <p>Found no movies.</p>;

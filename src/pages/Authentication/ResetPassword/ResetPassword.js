@@ -8,6 +8,7 @@ import Input from '../../../components/UI/Input/Input';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
+import Logo from '../../../components/Logo/Logo';
 
 const ResetPassword = () => {
   const {
@@ -109,51 +110,58 @@ const ResetPassword = () => {
   };
 
   return (
-    <Center>
-      <Card className={classes['reset-password']}>
-        <form onSubmit={submitHandler}>
-          <Input
-            ref={emailInputRef}
-            id="email"
-            label="E-Mail"
-            type="email"
-            isValid={emailIsValid}
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
-          />
-          <Input
-            ref={passwordInputRef}
-            id="password"
-            label="Password"
-            type="password"
-            isValid={passwordIsValid}
-            value={passwordState.value}
-            onChange={passwordChangeHandler}
-            onBlur={validatePasswordHandler}
-          />
-          <Input
-            ref={confirmPasswordInputRef}
-            id="confirm_password"
-            label="Confirm Password"
-            type="password"
-            isValid={confirmPasswordIsValid}
-            value={confirmPasswordState.value}
-            onChange={confirmPasswordChangeHandler}
-            onBlur={validateConfirmPasswordHandler}
-          />
-          <div className={classes.actions}>
-            <Button
-              type="submit"
-              //   className={classes.btn}
-              disabled={!formIsValid || isLoading}
-            >
-              {isLoading ? 'Reseting...' : 'Reset Password'}
-            </Button>
-          </div>
-        </form>
-      </Card>
-    </Center>
+    <React.Fragment>
+      <Center>
+        <div style={{ width: '100%' }}>
+          <center>
+            <Logo />
+          </center>
+          <Card className={classes['reset-password']}>
+            <form onSubmit={submitHandler}>
+              <Input
+                ref={emailInputRef}
+                id="email"
+                label="E-Mail"
+                type="email"
+                isValid={emailIsValid}
+                value={emailState.value}
+                onChange={emailChangeHandler}
+                onBlur={validateEmailHandler}
+              />
+              <Input
+                ref={passwordInputRef}
+                id="password"
+                label="Password"
+                type="password"
+                isValid={passwordIsValid}
+                value={passwordState.value}
+                onChange={passwordChangeHandler}
+                onBlur={validatePasswordHandler}
+              />
+              <Input
+                ref={confirmPasswordInputRef}
+                id="confirm_password"
+                label="Confirm Password"
+                type="password"
+                isValid={confirmPasswordIsValid}
+                value={confirmPasswordState.value}
+                onChange={confirmPasswordChangeHandler}
+                onBlur={validateConfirmPasswordHandler}
+              />
+              <div className={classes.actions}>
+                <Button
+                  type="submit"
+                  //   className={classes.btn}
+                  disabled={!formIsValid || isLoading}
+                >
+                  {isLoading ? 'Reseting...' : 'Reset Password'}
+                </Button>
+              </div>
+            </form>
+          </Card>
+        </div>
+      </Center>
+    </React.Fragment>
   );
 };
 

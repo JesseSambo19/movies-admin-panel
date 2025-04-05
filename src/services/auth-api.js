@@ -97,11 +97,11 @@ export const handleForgotPassword = async (
   setSendLink
 ) => {
   setIsLoading(true);
-  setSendLink(true);
   try {
     const response = await axios.post(`${API_URL}/forgot-password`, { email });
     alert(response.data.message); // Password reset link sent
     // alert('We have emailed your password reset link.');
+    setSendLink(true); // when sent successfully, the state of send reset link will change to resend reset link
   } catch (error) {
     handleAxiosError(error);
     console.error(error);

@@ -120,7 +120,7 @@ export const AuthContextProvider = (props) => {
     // But it's just a dummy/ demo anyways
 
     if (password !== confirmPassword) {
-      alert(`The password field confirmation does not match.`);
+      alert('The passwords do not match.');
       return;
     }
 

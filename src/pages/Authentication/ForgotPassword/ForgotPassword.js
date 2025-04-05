@@ -8,6 +8,7 @@ import Input from '../../../components/UI/Input/Input';
 import { Link, Navigate } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
+import Logo from '../../../components/Logo/Logo';
 
 const ForgotPassword = () => {
   const {
@@ -81,43 +82,59 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Center>
-      <Card className={classes['forgot-password']}>
-        <p className={classes['reset-password-message']}>
-          {sendLink
-            ? 'We have sent you a password reset link. Please check your email.'
-            : 'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.'}
-        </p>
-        <form onSubmit={submitHandler}>
-          <Input
-            ref={emailInputRef}
-            id="email"
-            label="E-Mail"
-            type="email"
-            isValid={emailIsValid}
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
-          />
-          <div className={classes.actions}>
-            <Button
-              type="submit"
-              // className={classes.btn}
-              disabled={!formIsValid || isLoading}
-            >
-              {isLoading
-                ? 'Sending...'
-                : sendLink
-                ? 'Resend Reset Link'
-                : ' Send Reset Link'}
-            </Button>
-          </div>
-          <span className={classes.link}>
-            <Link to="/login">Remembered Password?</Link>
-          </span>
-        </form>
-      </Card>
-    </Center>
+    <React.Fragment>
+      <Center>
+        <div style={{ width: '100%' }}>
+          <center>
+            <Logo />
+          </center>
+          <Card className={classes['forgot-password']}>
+            {sendLink ? (
+              <p className={classes['reset-password-message']}>
+                We have sent you a password reset link to your email. Please
+                check your inbox to continue. If you don't see it, be sure to
+                check your spam or junk folder.
+              </p>
+            ) : (
+              <p className={classes['reset-password-message']}>
+                Forgot your password? No problem. Just let us know your email
+                address and we will email you a password reset link that will
+                allow you to choose a new one.
+              </p>
+            )}
+
+            <form onSubmit={submitHandler}>
+              <Input
+                ref={emailInputRef}
+                id="email"
+                label="E-Mail"
+                type="email"
+                isValid={emailIsValid}
+                value={emailState.value}
+                onChange={emailChangeHandler}
+                onBlur={validateEmailHandler}
+              />
+              <div className={classes.actions}>
+                <Button
+                  type="submit"
+                  // className={classes.btn}
+                  disabled={!formIsValid || isLoading}
+                >
+                  {isLoading
+                    ? 'Sending...'
+                    : sendLink
+                    ? 'Resend Reset Link'
+                    : ' Send Reset Link'}
+                </Button>
+              </div>
+              <span className={classes.link}>
+                <Link to="/login">Remembered Password?</Link>
+              </span>
+            </form>
+          </Card>
+        </div>
+      </Center>
+    </React.Fragment>
   );
 };
 

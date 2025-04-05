@@ -63,18 +63,18 @@ const useProfileApi = () => {
   };
 
   const deleteUserAccount = async (closeModal) => {
+    setLoading(true);
     try {
       const response = await axiosInstance.delete('delete-account');
       alert(response.data.message);
       localStorage.clear(); // Clear token and session
-      // navigate('/login');
-      alert('Account deleted successfully');
       closeModal();
       window.location.reload();
     } catch (error) {
       handleAxiosError(error);
       console.error(error.response.data);
     }
+    setLoading(false);
   };
   return {
     fetchUserProfile,

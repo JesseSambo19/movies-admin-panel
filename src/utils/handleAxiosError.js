@@ -1,6 +1,9 @@
 export const handleAxiosError = (error) => {
-  // alert('Something went wrong');
-  alert(error.message);
+  // production
+  // alert(`Error: ${error.message}`);
+  alert(`Error: ${error.response.data.message || 'Something went wrong!'}`);
+
+  // development
   // if (error.response) {
   //   // Server responded with an error status (4xx, 5xx)
   //   console.error('Error Response:', error.response.data);
