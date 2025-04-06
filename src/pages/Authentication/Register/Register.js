@@ -186,10 +186,9 @@ const Register = () => {
                   Password needs to be at least 8 characters
                 </p>
               )}
-              {!(
-                /* confirmPasswordIsValid && */
-                (passwordState.value === confirmPasswordState.value)
-              ) && <p style={{ color: 'red' }}>Passwords do not match</p>}
+              {passwordState.value !== confirmPasswordState.value && (
+                <p style={{ color: 'red' }}>Passwords do not match</p>
+              )}
               <div className={classes.actions}>
                 <Button
                   type="submit"

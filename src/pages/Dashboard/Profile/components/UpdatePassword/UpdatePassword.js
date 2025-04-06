@@ -250,10 +250,9 @@ const UpdatePassword = () => {
             Password needs to be at least 8 characters
           </p>
         )}
-        {!(
-          /* confirmNewPasswordIsValid && */
-          (newPasswordState.value === confirmNewPasswordState.value)
-        ) && <p style={{ color: 'red' }}>Passwords do not match</p>}
+        {newPasswordState.value !== confirmNewPasswordState.value && (
+          <p style={{ color: 'red' }}>Passwords do not match</p>
+        )}
         <div className={classes.actions}>
           <Button
             type="submit"

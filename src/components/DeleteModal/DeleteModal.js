@@ -8,7 +8,7 @@ const DeleteModal = (props) => {
   return (
     <div>
       {props.showModal && (
-        <Modal onClose={isLoading ? doNothing : props.onClose}>
+        <Modal onClose={props.isLoading ? doNothing : props.onClose}>
           <div style={{ backgroundColor: 'white' }}>
             <p style={{ textAlign: 'center' }}>
               {props.isLoading ? 'Deleting...' : props.text}
