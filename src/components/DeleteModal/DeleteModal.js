@@ -4,10 +4,11 @@ import Button from '../UI/Button/Button';
 // import classes from './DeleteModal.module.css';
 
 const DeleteModal = (props) => {
+  const doNothing = () => {};
   return (
     <div>
       {props.showModal && (
-        <Modal onClose={props.onClose}>
+        <Modal onClose={isLoading ? doNothing : props.onClose}>
           <div style={{ backgroundColor: 'white' }}>
             <p style={{ textAlign: 'center' }}>
               {props.isLoading ? 'Deleting...' : props.text}
