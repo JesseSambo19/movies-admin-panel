@@ -6,7 +6,7 @@ import AddMovie from './pages/Dashboard/Movies/AddMovie/AddMovie';
 import ViewMovie from './pages/Dashboard/Movies/ViewMovie/ViewMovie';
 import EditMovie from './pages/Dashboard/Movies/EditMovie/EditMovie';
 import MovieList from './pages/Dashboard/Movies/MoviesList/MoviesList';
-import Home from './pages/Dashboard/Home2/Home';
+import Home from './pages/Dashboard/Home/Home';
 import Login from './pages/Authentication/Login/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/Authentication/Register/Register';
