@@ -251,8 +251,8 @@ const UpdatePassword = () => {
           </p>
         )}
         {!(
-          confirmNewPasswordIsValid &&
-          newPasswordState.value === confirmNewPasswordState.value
+          /* confirmNewPasswordIsValid && */
+          (newPasswordState.value === confirmNewPasswordState.value)
         ) && <p style={{ color: 'red' }}>Passwords do not match</p>}
         <div className={classes.actions}>
           <Button

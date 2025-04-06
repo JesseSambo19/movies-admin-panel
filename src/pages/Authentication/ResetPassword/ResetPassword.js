@@ -168,8 +168,8 @@ const ResetPassword = () => {
               )}
 
               {!(
-                confirmPasswordIsValid &&
-                passwordState.value === confirmPasswordState.value
+                /* confirmPasswordIsValid && */
+                (passwordState.value === confirmPasswordState.value)
               ) && <p style={{ color: 'red' }}>Passwords do not match</p>}
               <div className={classes.actions}>
                 <Button
