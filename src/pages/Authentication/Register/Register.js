@@ -54,7 +54,11 @@ const Register = () => {
       setFormIsValid(
         // enteredEmail.includes('@') && enteredPassword.trim().length > 6
         // we're only checking for changes only with validations
-        emailIsValid && passwordIsValid && nameIsValid && confirmPasswordIsValid
+        emailIsValid &&
+          passwordIsValid &&
+          nameIsValid &&
+          confirmPasswordIsValid &&
+          passwordState.value === confirmPasswordState.value
       );
     }, 500);
     // clean up function to remove the timer when the component is unmounted
@@ -74,6 +78,8 @@ const Register = () => {
     nameIsValid,
     confirmPasswordIsValid,
     setFormIsValid,
+    passwordState.value,
+    confirmPasswordState.value,
   ]);
   // }, [emailState.isValid, passwordState.isValid]); // alternatively one can access the properties that need to be dependencies instead of the whole state object
 
@@ -167,11 +173,23 @@ const Register = () => {
                 id="confirm_password"
                 label="Confirm Password"
                 type="password"
-                isValid={confirmPasswordIsValid}
+                isValid={
+                  confirmPasswordIsValid &&
+                  passwordState.value === confirmPasswordState.value
+                }
                 value={confirmPasswordState.value}
                 onChange={confirmPasswordChangeHandler}
                 onBlur={validateConfirmPasswordHandler}
               />
+              {passwordIsValid === false && (
+                <p style={{ color: 'red' }}>
+                  Password needs to be at least 8 characters
+                </p>
+              )}
+              {!(
+                confirmPasswordIsValid &&
+                passwordState.value === confirmPasswordState.value
+              ) && <p style={{ color: 'red' }}>Passwords do not match</p>}
               <div className={classes.actions}>
                 <Button
                   type="submit"

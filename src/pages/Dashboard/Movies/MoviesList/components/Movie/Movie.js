@@ -26,6 +26,7 @@ const Movie = (props) => {
         onClose={closeModal}
         text="Are you sure you want to delete this record?"
         onDelete={deleteMovie}
+        isLoading={props.isLoading}
       />
 
       <li className={classes.movie}>

@@ -123,7 +123,7 @@ const ForgotPassword = () => {
                   {isLoading
                     ? 'Sending...'
                     : sendLink
-                    ? 'Resend Reset Link'
+                    ? 'Send New Reset Link'
                     : ' Send Reset Link'}
                 </Button>
               </div>

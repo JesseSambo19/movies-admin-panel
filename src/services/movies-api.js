@@ -135,21 +135,37 @@ const useMoviesApi = () => {
     setError,
     page,
     setCurrentPage,
-    setLastPage
+    setLastPage,
+    setIsLoading,
+    setShowModal
   ) => {
+    setIsLoading(true);
     try {
-      const response = await axios.delete(`${API_URL}/movies/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      let response;
+      if (id !== undefined) {
+        response = await axios.delete(`${API_URL}/movies/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+      } else {
+        response = await axios.delete(`${API_URL}/movies/delete-all`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+      }
 
       const data = await response.data;
       console.log(data);
 
       // Show success message
       alert(`${data.message}`);
+      if (id === undefined) {
+        setShowModal(false);
+      }
 
       fetchMoviesHandler(
         undefinedID,
@@ -163,6 +179,7 @@ const useMoviesApi = () => {
     } catch (error) {
       handleAxiosError(error);
     }
+    setIsLoading(false);
   };
 
   const deleteViewedMovieHandler = async (id) => {

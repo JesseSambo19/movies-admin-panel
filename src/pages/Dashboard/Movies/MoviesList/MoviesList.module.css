@@ -12,3 +12,12 @@
   color: white;
   margin: 0px 20px;
 }
+
+.btn {
+  background-color: red;
+  border: red;
+}
+
+.btn:hover {
+  background-color: darkred;
+}

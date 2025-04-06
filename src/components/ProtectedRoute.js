@@ -6,9 +6,9 @@ const ProtectedRoute = () => {
   const authCtx = useAuth();
   const location = useLocation();
 
-  console.log(
-    `ProtectedRoute - Checking Auth: ${authCtx.isCheckingAuth}, isLoggedIn: ${authCtx.isLoggedIn}, isVerified: ${authCtx.isVerified}`
-  );
+  // console.log(
+  //   `ProtectedRoute - Checking Auth: ${authCtx.isCheckingAuth}, isLoggedIn: ${authCtx.isLoggedIn}, isVerified: ${authCtx.isVerified}`
+  // );
 
   // when the website is loaded or reloaded, this code checkes for authentication
   // if (authCtx.isCheckingAuth) {
@@ -23,7 +23,6 @@ const ProtectedRoute = () => {
     location.pathname !== '/' &&
     location.pathname !== '/send-verification-email' &&
     location.pathname !== '/profile' &&
-    // !authCtx.isNotVerified &&
     !authCtx.isLoggedOut // this prevents this if statement from triggering when a user is logged out from their current session. When starting a new session
     // this will trigger provided that the conditions above are are all true. In other words, I had an issue where as every time I pressed the log out button to logout, it will still
     // saved the current path and when I tried logging in again, it would take me to that path again. So this fixes that so it doesn't save the current path when I explicitly press the logout button to logout

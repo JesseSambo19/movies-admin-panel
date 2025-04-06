@@ -46,8 +46,10 @@ export const handleLogout = async (
   setIsLoggedIn,
   setIsLoggedOut,
   setUserName,
-  setIsVerified
+  setIsVerified,
+  setIsLoading
 ) => {
+  setIsLoading(true);
   try {
     const response = await axiosInstance.post('logout');
     localStorage.clear(); // clear cache e.g token, isLoggedIn, isVerified, userName, email (if stored)
@@ -62,6 +64,7 @@ export const handleLogout = async (
     handleAxiosError(error);
     // alert('Logout failed');
   }
+  setIsLoading(false);
 };
 
 export const handleRegister = async (

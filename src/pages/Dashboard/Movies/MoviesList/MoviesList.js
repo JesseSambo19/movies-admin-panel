@@ -5,6 +5,7 @@ import Card from '../../../../components/UI/Card/Card';
 import Button from '../../../../components/UI/Button/Button';
 import useMoviesApi from '../../../../services/movies-api';
 import Pagination from '../../../../components/Pagination/Pagination';
+import DeleteModal from '../../../../components/DeleteModal/DeleteModal';
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
@@ -12,6 +13,9 @@ const MovieList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1); // Total pages
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   // custom hook
   const { fetchMoviesHandler, deleteMovieHandler } = useMoviesApi();
 
@@ -44,8 +48,33 @@ const MovieList = () => {
       setError,
       currentPage,
       setCurrentPage,
-      setLastPage
+      setLastPage,
+      setIsLoading,
+      // setShowModal/
     );
+  };
+
+  const onDeleteAllMoviesHandler = () => {
+    deleteMovieHandler(
+      undefined,
+      undefined,
+      false,
+      setMovies,
+      setError,
+      currentPage,
+      setCurrentPage,
+      setLastPage,
+      setIsLoading,
+      setShowModal
+    );
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   let content = <p>Found no movies.</p>;
@@ -61,6 +90,8 @@ const MovieList = () => {
             releaseDate={movie.releaseDate}
             openingText={movie.openingText}
             onDeleteMovie={onDeleteMovieHandler}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
           />
         ))}
       </ul>
@@ -76,18 +107,35 @@ const MovieList = () => {
   // }
   return (
     <React.Fragment>
+      <DeleteModal
+        showModal={showModal}
+        onClose={closeModal}
+        text="Are you sure you want to delete all records?"
+        onDelete={onDeleteAllMoviesHandler}
+        isLoading={isLoading}
+      />
       <Card>
-        <Button onClick={onFetchMoviesHandler}>Fetch Movies</Button>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <Button onClick={onFetchMoviesHandler}>Fetch Movies</Button>
+          {movies.length >= 2 && (
+            <Button
+              className={classes.btn}
+              onClick={openModal}
+            >
+              Delete All Movies
+            </Button>
+          )}
+        </div>
       </Card>
       <Card>{content}</Card>
       {/* Pagination Controls */}
-      {lastPage > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          onSetCurrentPage={setCurrentPage}
-          lastPage={lastPage}
-        />
-      )}
+      {/* {lastPage > 1 && ( */}
+      <Pagination
+        currentPage={currentPage}
+        onSetCurrentPage={setCurrentPage}
+        lastPage={lastPage}
+      />
+      {/* )} */}
     </React.Fragment>
   );
 };

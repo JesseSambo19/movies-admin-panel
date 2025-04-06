@@ -77,7 +77,7 @@ const SendVerificationEmail = () => {
             ) : (
               <p>
                 To continue using the dashboard, please verify your email. Press
-                "Send OTP" to receive a 6-digit verification code.
+                "Send OTP Code" to receive a 6-digit verification code.
               </p>
             )}
 
@@ -115,8 +115,8 @@ const SendVerificationEmail = () => {
                   {sendingOtp
                     ? 'Sending...'
                     : sendOtp
-                    ? 'Resend OTP'
-                    : 'Send OTP'}
+                    ? 'Send New OTP Code'
+                    : 'Send OTP Code'}
                 </Button>
               </div>
 

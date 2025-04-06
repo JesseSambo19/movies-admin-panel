@@ -9,7 +9,9 @@ const DeleteModal = (props) => {
       {props.showModal && (
         <Modal onClose={props.onClose}>
           <div style={{ backgroundColor: 'white' }}>
-            <p style={{ textAlign: 'center' }}>{props.text}</p>
+            <p style={{ textAlign: 'center' }}>
+              {props.isLoading ? 'Deleting...' : props.text}
+            </p>
             <span
               style={{
                 display: 'flex',
@@ -17,8 +19,18 @@ const DeleteModal = (props) => {
                 justifyContent: 'space-around',
               }}
             >
-              <Button onClick={props.onDelete}>Ok</Button>
-              <Button onClick={props.onClose}>Cancel</Button>
+              <Button
+                disabled={props.isLoading}
+                onClick={props.onDelete}
+              >
+                Ok
+              </Button>
+              <Button
+                disabled={props.isLoading}
+                onClick={props.onClose}
+              >
+                Cancel
+              </Button>
             </span>
           </div>
         </Modal>

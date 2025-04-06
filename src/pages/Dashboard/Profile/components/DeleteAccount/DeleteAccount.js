@@ -9,6 +9,7 @@ import useProfileApi from '../../../../../services/profile-api';
 const DeleteAccount = () => {
   const { deleteUserAccount } = useProfileApi();
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setShowModal(true);
@@ -19,7 +20,7 @@ const DeleteAccount = () => {
   };
 
   const deleteAccount = () => {
-    deleteUserAccount(closeModal);
+    deleteUserAccount(closeModal, setIsLoading);
   };
 
   return (
@@ -29,6 +30,8 @@ const DeleteAccount = () => {
         onClose={closeModal}
         text="Are you sure you want to delete your account permanently?"
         onDelete={deleteAccount}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
       />
       <Card>
         <h3>Delete Account</h3>

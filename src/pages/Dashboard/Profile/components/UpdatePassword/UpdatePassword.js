@@ -104,7 +104,8 @@ const UpdatePassword = () => {
         // we're only checking for changes only with validations
         currentPasswordIsValid &&
           newPasswordIsValid &&
-          confirmNewPasswordIsValid
+          confirmNewPasswordIsValid &&
+          newPasswordState.value === confirmNewPasswordState.value
       );
     }, 500);
     // clean up function to remove the timer when the component is unmounted
@@ -118,7 +119,13 @@ const UpdatePassword = () => {
     };
     // }, [enteredEmail, enteredPassword]);
     // we're only checking for changes only with validations
-  }, [currentPasswordIsValid, newPasswordIsValid, confirmNewPasswordIsValid]);
+  }, [
+    currentPasswordIsValid,
+    newPasswordIsValid,
+    confirmNewPasswordIsValid,
+    newPasswordState.value,
+    confirmNewPasswordState.value,
+  ]);
   // }, [emailState.isValid, passwordState.isValid]); // alternatively one can access the properties that need to be dependencies instead of the whole state object
 
   const currentPasswordChangeHandler = (event) => {
@@ -174,15 +181,26 @@ const UpdatePassword = () => {
       return;
     }
 
-    updateUserPassword(
-      currentPasswordState.value,
-      newPasswordState.value,
-      confirmNewPasswordState.value,
-      dispatchCurrentPassword,
-      dispatchNewPassword,
-      dispatchConfirmNewPassword,
-      setIsLoading
-    );
+    if (formIsValid) {
+      updateUserPassword(
+        currentPasswordState.value,
+        newPasswordState.value,
+        confirmNewPasswordState.value,
+        dispatchCurrentPassword,
+        dispatchNewPassword,
+        dispatchConfirmNewPassword,
+        setIsLoading
+      );
+    } else if (!currentPasswordIsValid) {
+      // this targets the function that was set in the Input component's ref variable
+      currentPasswordInputRef.current.focus();
+    } else if (!newPasswordIsValid) {
+      // this targets the function that was set in the Input component's ref variable
+      newPasswordInputRef.current.focus();
+    } else {
+      // this targets the function that was set in the Input component's ref variable
+      confirmNewPasswordInputRef.current.focus();
+    }
   };
 
   return (
@@ -219,11 +237,23 @@ const UpdatePassword = () => {
           id="confirm-password"
           label="Confirm Password"
           type="password"
-          isValid={confirmNewPasswordIsValid}
+          isValid={
+            confirmNewPasswordIsValid &&
+            newPasswordState.value === confirmNewPasswordState.value
+          }
           value={confirmNewPasswordState.value}
           onChange={confirmPasswordChangeHandler}
           onBlur={validateConfirmNewPasswordHandler}
         />
+        {(currentPasswordIsValid === false || newPasswordIsValid === false) && (
+          <p style={{ color: 'red' }}>
+            Password needs to be at least 8 characters
+          </p>
+        )}
+        {!(
+          confirmNewPasswordIsValid &&
+          newPasswordState.value === confirmNewPasswordState.value
+        ) && <p style={{ color: 'red' }}>Passwords do not match</p>}
         <div className={classes.actions}>
           <Button
             type="submit"

@@ -62,8 +62,8 @@ const useProfileApi = () => {
     setIsLoading(false);
   };
 
-  const deleteUserAccount = async (closeModal) => {
-    setLoading(true);
+  const deleteUserAccount = async (closeModal, setIsLoading) => {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.delete('delete-account');
       alert(response.data.message);
@@ -74,7 +74,7 @@ const useProfileApi = () => {
       handleAxiosError(error);
       console.error(error.response.data);
     }
-    setLoading(false);
+    setIsLoading(false);
   };
   return {
     fetchUserProfile,

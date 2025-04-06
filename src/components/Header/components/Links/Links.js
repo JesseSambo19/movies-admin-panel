@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classes from './Links.module.css';
 import { Link, NavLink } from 'react-router-dom';
 import { AiOutlineCaretDown } from 'react-icons/ai';
 
 const Links = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const onClick = props.mobile ? props.onCloseModal : () => () => {};
   const closeDropdownAndModal = () => {
     props.onCloseDropdown();
     props.onCloseModal();
+  };
+
+  const handleLogout = () => {
+    props.onHandleLogout(setIsLoading);
   };
   return (
     <ul className={classes[props.className1]}>
@@ -56,18 +61,27 @@ const Links = (props) => {
             {props.mobile ? (
               <Link
                 to="/profile"
-                onClick={
-                  props.mobile ? closeDropdownAndModal : props.onCloseDropdown
-                }
+                onClick={closeDropdownAndModal}
               >
                 Profile
               </Link>
             ) : (
-              <li style={{ paddingTop: '20px' }}>Profile</li>
+              <Link
+                to="/profile"
+                onClick={props.onCloseDropdown}
+              >
+                <li style={{ paddingTop: '20px' }}>Profile</li>
+              </Link>
             )}
-            <li onClick={props.onHandleLogout}>
-              <p>Logout</p>
-            </li>
+            {isLoading ? (
+              <li>
+                <p>...........</p>
+              </li>
+            ) : (
+              <li onClick={handleLogout}>
+                <p>Logout</p>
+              </li>
+            )}
           </ul>
         )}
       </li>

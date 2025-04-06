@@ -28,21 +28,23 @@ const Header = () => {
     setShowMobileMenu(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (setIsLoading) => {
     // closeDropdown();
-    authCtx.onLogout();
+    authCtx.onLogout(setIsLoading);
   };
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
+        !isMobile &&
         dropdownDesktopRef.current &&
         !dropdownDesktopRef.current.contains(event.target)
       ) {
         closeDropdown();
       }
       if (
+        isMobile &&
         dropdownMobileRef.current &&
         !dropdownMobileRef.current.contains(event.target)
       ) {
@@ -62,7 +64,7 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <nav className={classes.navbar}>

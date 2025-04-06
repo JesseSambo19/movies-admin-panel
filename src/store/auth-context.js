@@ -104,8 +104,14 @@ export const AuthContextProvider = (props) => {
     );
   };
 
-  const logoutHandler = () => {
-    handleLogout(setIsLoggedIn, setIsLoggedOut, setUserName, setIsVerified);
+  const logoutHandler = (setIsLoading) => {
+    handleLogout(
+      setIsLoggedIn,
+      setIsLoggedOut,
+      setUserName,
+      setIsVerified,
+      setIsLoading
+    );
   };
 
   const registerHandler = (
