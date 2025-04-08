@@ -51,7 +51,7 @@ const Links = (props) => {
           className={classes[props.className2]}
           onClick={props.onOpenDropdown}
         >
-          {props.userName}
+          {props.mobile ? props.userName.split(' ')[0] : props.userName}
           <span style={{ paddingTop: '100px', paddingLeft: '10px' }}>
             <AiOutlineCaretDown size={16} />
           </span>
@@ -76,6 +76,7 @@ const Links = (props) => {
             {isLoading ? (
               <li>
                 <p>...........</p>
+                {/* <p>Logging out...</p> */}
               </li>
             ) : (
               <li onClick={handleLogout}>

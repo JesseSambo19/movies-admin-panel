@@ -37,9 +37,11 @@
   right: 10;
   background-color: white;
   padding: 5px 0px;
+  /* width: 160px; */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .dropdown-menu-desktop li {
@@ -106,6 +108,7 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .dropdown-menu-mobile li {
@@ -133,7 +136,7 @@
   width: 100%;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 843px) {
   /* Styles to apply when the screen width is 768px or less */
   .list-desktop {
     display: none;

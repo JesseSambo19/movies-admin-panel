@@ -12,7 +12,7 @@ const Header = () => {
   const authCtx = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 844);
   const dropdownDesktopRef = useRef(null); // Reference for the dropdown
   const dropdownMobileRef = useRef(null); // Reference for the dropdown
 
@@ -53,7 +53,7 @@ const Header = () => {
     };
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 800);
+      setIsMobile(window.innerWidth < 844);
     };
 
     document.addEventListener('mousedown', handleClickOutside);
