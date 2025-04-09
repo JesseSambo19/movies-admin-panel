@@ -4,7 +4,7 @@ import './Footer.module.css';
 const Footer = () => {
   return (
     <footer>
-      <p>Developed by Jesse Sambo. All Rights Reserved. 2025</p>
+      <p>Copyright &copy; 2025. Developed by Jesse Sambo. All rights reserved.</p>
     </footer>
   );
 };

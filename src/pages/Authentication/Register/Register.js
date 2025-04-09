@@ -181,14 +181,15 @@ const Register = () => {
                 onChange={confirmPasswordChangeHandler}
                 onBlur={validateConfirmPasswordHandler}
               />
-              {passwordIsValid === false && (
+              {passwordState.value.length > 0 && passwordIsValid === false && (
                 <p style={{ color: 'red' }}>
                   Password needs to be at least 8 characters
                 </p>
               )}
-              {passwordState.value !== confirmPasswordState.value && (
-                <p style={{ color: 'red' }}>Passwords do not match</p>
-              )}
+              {confirmPasswordState.value.length > 0 &&
+                passwordState.value !== confirmPasswordState.value && (
+                  <p style={{ color: 'red' }}>Passwords do not match</p>
+                )}
               <div className={classes.actions}>
                 <Button
                   type="submit"

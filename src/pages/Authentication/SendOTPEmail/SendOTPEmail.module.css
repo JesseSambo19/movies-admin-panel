@@ -21,6 +21,7 @@
   color: #230052;
   text-decoration: underline;
   cursor: pointer;
+  padding: 0px !important;
 }
 
 .btn:hover {
@@ -46,4 +47,10 @@
 
 .otpInput:focus {
   outline: 2px solid #230052;
+}
+
+@media screen and (max-width: 333px) {
+  .otpContainer {
+    gap: 5px;
+  }
 }

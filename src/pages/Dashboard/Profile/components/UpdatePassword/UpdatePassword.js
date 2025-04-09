@@ -176,10 +176,10 @@ const UpdatePassword = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (newPasswordState.value !== confirmNewPasswordState.value) {
-      alert('The passwords do not match.');
-      return;
-    }
+    // if (newPasswordState.value !== confirmNewPasswordState.value) {
+    //   alert('The passwords do not match.');
+    //   return;
+    // }
 
     if (formIsValid) {
       updateUserPassword(
@@ -245,14 +245,18 @@ const UpdatePassword = () => {
           onChange={confirmPasswordChangeHandler}
           onBlur={validateConfirmNewPasswordHandler}
         />
-        {(currentPasswordIsValid === false || newPasswordIsValid === false) && (
-          <p style={{ color: 'red' }}>
-            Password needs to be at least 8 characters
-          </p>
-        )}
-        {newPasswordState.value !== confirmNewPasswordState.value && (
-          <p style={{ color: 'red' }}>Passwords do not match</p>
-        )}
+        {(currentPasswordState.value.length > 0 ||
+          newPasswordState.value.length > 0) &&
+          (currentPasswordIsValid === false ||
+            newPasswordIsValid === false) && (
+            <p style={{ color: 'red' }}>
+              Password needs to be at least 8 characters
+            </p>
+          )}
+        {confirmNewPasswordState.value.length > 0 &&
+          newPasswordState.value !== confirmNewPasswordState.value && (
+            <p style={{ color: 'red' }}>Passwords do not match</p>
+          )}
         <div className={classes.actions}>
           <Button
             type="submit"
