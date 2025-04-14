@@ -9,6 +9,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
 import Logo from '../../../components/Logo/Logo';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const ResetPassword = () => {
   const {
@@ -177,7 +178,14 @@ const ResetPassword = () => {
                   //   className={classes.btn}
                   disabled={!formIsValid || isLoading}
                 >
-                  {isLoading ? 'Reseting...' : 'Reset Password'}
+                  {isLoading ? (
+                    <>
+                      <LoadingSpinner />
+                      <span>Reseting...</span>
+                    </>
+                  ) : (
+                    'Reset Password'
+                  )}
                 </Button>
               </div>
             </form>

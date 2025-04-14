@@ -16,8 +16,9 @@
 }
 
 .btn {
-  background: none;
-  border: none;
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
   color: #230052;
   text-decoration: underline;
   cursor: pointer;
@@ -27,6 +28,7 @@
 .btn:hover {
   background: none !important;
   border: none !important;
+  background-color: transparent !important;
 }
 
 .otpContainer {

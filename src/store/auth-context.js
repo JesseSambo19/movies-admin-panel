@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import {
-  handleForgotPassword,
-  handleLogin,
-  handleLogout,
-  handleRegister,
-  handleResetPassword,
-  handleSendOtp,
-  verifyOtp,
-  // handleVerifyToken,
-} from '../services/auth-api';
+import useAuthApi from '../services/auth-api';
 
 const AuthContext = React.createContext({
   userName: '',
@@ -36,6 +27,16 @@ export const AuthContextProvider = (props) => {
   const [isVerified, setIsVerified] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const pathNameRef = useRef(''); // Using useRef to store pathName without triggering re-renders
+  const {
+    handleForgotPassword,
+    handleLogin,
+    handleLogout,
+    handleRegister,
+    handleResetPassword,
+    handleSendOtp,
+    verifyOtp,
+    // handleVerifyToken,
+  } = useAuthApi();
 
   // to ensure that the component doesn't re render for every state change
   useEffect(() => {
@@ -125,10 +126,10 @@ export const AuthContextProvider = (props) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
 
-    if (password !== confirmPassword) {
-      alert('The passwords do not match.');
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   alert('The passwords do not match.');
+    //   return;
+    // }
 
     handleRegister(
       name,
@@ -157,10 +158,10 @@ export const AuthContextProvider = (props) => {
     // We should of course check email and password
     // But it's just a dummy/ demo anyways
 
-    if (password !== confirmPassword) {
-      alert(`The password field confirmation does not match.`);
-      return;
-    }
+    // if (password !== confirmPassword) {
+    //   alert(`The password field confirmation does not match.`);
+    //   return;
+    // }
 
     // alert('Your password has been reset.');
     handleResetPassword(
@@ -181,7 +182,11 @@ export const AuthContextProvider = (props) => {
   };
 
   const verifyOtpHandler = (otpCode, setVerifyingOtp) => {
-    verifyOtp(otpCode, setIsVerified, setVerifyingOtp);
+    verifyOtp(
+      otpCode,
+      // setIsVerified,
+      setVerifyingOtp
+    );
   };
 
   return (

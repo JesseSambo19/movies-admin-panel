@@ -4,6 +4,7 @@ import Input from '../../../../../components/UI/Input/Input';
 import Button from '../../../../../components/UI/Button/Button';
 import classes from './UpdatePassword.module.css';
 import useProfileApi from '../../../../../services/profile-api';
+import LoadingSpinner from '../../../../../components/LoadingSpinner/LoadingSpinner';
 
 // this reducer is created outside of the scope of this component because it doesn't need to interact with anything defined in the component
 // all the data which will be required by this function will be passed  into this function when it's executed by React, automatically
@@ -189,6 +190,7 @@ const UpdatePassword = () => {
         dispatchCurrentPassword,
         dispatchNewPassword,
         dispatchConfirmNewPassword,
+        setFormIsValid,
         setIsLoading
       );
     } else if (!currentPasswordIsValid) {
@@ -263,7 +265,14 @@ const UpdatePassword = () => {
             // className={classes.btn}
             disabled={!formIsValid || isLoading}
           >
-            {isLoading ? 'SAVING...' : 'SAVE'}
+            {isLoading ? (
+              <>
+                <LoadingSpinner />
+                <span>SAVING...</span>
+              </>
+            ) : (
+              'SAVE'
+            )}
           </Button>
         </div>
       </form>

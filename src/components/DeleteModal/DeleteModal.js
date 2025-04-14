@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from '../UI/Modal/Modal';
 import Button from '../UI/Button/Button';
+// import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 // import classes from './DeleteModal.module.css';
 
 const DeleteModal = (props) => {
@@ -11,7 +12,19 @@ const DeleteModal = (props) => {
         <Modal onClose={props.isLoading ? doNothing : props.onClose}>
           <div style={{ backgroundColor: 'white' }}>
             <p style={{ textAlign: 'center' }}>
-              {props.isLoading ? 'Deleting...' : props.text}
+              {props.isLoading ? (
+                <>
+                  {/* <LoadingSpinner
+                    style={{
+                      border: '5px solid yelow !important',
+                      borderTop: '5px solid blue !important',
+                    }}
+                  /> */}
+                  <span>Deleting...</span>
+                </>
+              ) : (
+                props.text
+              )}
             </p>
             <span
               style={{

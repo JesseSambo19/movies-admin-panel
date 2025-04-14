@@ -12,7 +12,7 @@ import NotFoundPage from '../../Errors/NotFound/NotFound';
 const ViewMovie = () => {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   // custom hook
   const { fetchMoviesHandler, deleteViewedMovieHandler } = useMoviesApi();
@@ -25,7 +25,7 @@ const ViewMovie = () => {
   });
 
   const deleteMovie = () => {
-    deleteViewedMovieHandler(id);
+    deleteViewedMovieHandler(id, setIsLoading);
   };
 
   const openModal = () => {
@@ -63,6 +63,7 @@ const ViewMovie = () => {
             onClose={closeModal}
             text="Are you sure you want to delete this record?"
             onDelete={deleteMovie}
+            isLoading={isLoading}
           />
           <Card>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import classes from './Links.module.css';
 import { Link, NavLink } from 'react-router-dom';
 import { AiOutlineCaretDown } from 'react-icons/ai';
+import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 
 const Links = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +76,17 @@ const Links = (props) => {
             )}
             {isLoading ? (
               <li>
-                <p>...........</p>
+                {/* <p>...........</p> */}
+                <center>
+                  <LoadingSpinner
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      marginRight: '0px',
+                      marginTop: '10px',
+                    }}
+                  />
+                </center>
                 {/* <p>Logging out...</p> */}
               </li>
             ) : (

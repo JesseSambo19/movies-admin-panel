@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useLoading } from '../store/loading-context';
 import axiosInstance from '../utils/axios';
-import { handleAxiosError } from '../utils/handleAxiosError';
+import { handleAxiosError, notifySuccess } from '../utils/handleAxiosFeedback';
 
 const useProfileApi = () => {
   const { setLoading } = useLoading();
@@ -17,8 +17,9 @@ const useProfileApi = () => {
       } catch (error) {
         handleAxiosError(error);
         console.error(error.response?.data || error.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     },
     [setLoading]
   );
@@ -27,12 +28,14 @@ const useProfileApi = () => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.put('profile', { name, email });
-      alert(response.data.message);
+      // alert(response.data.message);
+      notifySuccess(response.data.message);
     } catch (error) {
       handleAxiosError(error);
       console.error(error.response.data);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const updateUserPassword = async (
@@ -42,6 +45,7 @@ const useProfileApi = () => {
     dispatchCurrentPassword,
     dispatchNewPassword,
     dispatchConfirmNewPassword,
+    setFormIsValid,
     setIsLoading
   ) => {
     setIsLoading(true);
@@ -51,30 +55,35 @@ const useProfileApi = () => {
         new_password: newPassword,
         new_password_confirmation: confirmNewPassword,
       });
-      alert(response.data.message);
+      // alert(response.data.message);
+      notifySuccess(response.data.message);
       dispatchCurrentPassword({ type: 'RESET' });
       dispatchNewPassword({ type: 'RESET' });
       dispatchConfirmNewPassword({ type: 'RESET' });
+      setFormIsValid(false);
     } catch (error) {
       handleAxiosError(error);
       console.error(error.response.data);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const deleteUserAccount = async (closeModal, setIsLoading) => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.delete('delete-account');
-      alert(response.data.message);
+      // alert(response.data.message);
+      notifySuccess(response.data.message);
       localStorage.clear(); // Clear token and session
       closeModal();
       window.location.reload();
     } catch (error) {
       handleAxiosError(error);
       console.error(error.response.data);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   return {
     fetchUserProfile,

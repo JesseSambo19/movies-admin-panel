@@ -7,6 +7,7 @@ import { useAuth } from '../../../store/auth-context';
 
 import Center from '../../../components/UI/Center/Center';
 import Logo from '../../../components/Logo/Logo';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const SendVerificationEmail = () => {
   const authCtx = useAuth();
@@ -14,6 +15,7 @@ const SendVerificationEmail = () => {
   const [sendOtp, setSendOtp] = useState(false); // keeps track of whether user already sent an otp request
   const [sendingOtp, setSendingOtp] = useState(false); // keeps track of sending state
   const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handles changes to OTP input
   const handleChange = (e, index) => {
@@ -60,6 +62,10 @@ const SendVerificationEmail = () => {
     // }
   };
 
+  const handleLogout = () => {
+    authCtx.onLogout(setIsLoading);
+  };
+
   return (
     <React.Fragment>
       <Center>
@@ -102,7 +108,14 @@ const SendVerificationEmail = () => {
                 disabled={verifyingOtp || otp.join('').length < 6}
                 onClick={handleVerifyOtp}
               >
-                {verifyingOtp ? 'Verifying...' : 'Verify OTP'}
+                {verifyingOtp ? (
+                  <>
+                    <LoadingSpinner />
+                    <span>Verifying...</span>
+                  </>
+                ) : (
+                  'Verify OTP'
+                )}
               </Button>
             </div>
             <div className={classes.space}>
@@ -112,20 +125,31 @@ const SendVerificationEmail = () => {
                   className={classes.btn}
                   onClick={handleSendOtp}
                 >
-                  {sendingOtp
-                    ? 'Sending...'
-                    : sendOtp
-                    ? 'Send New OTP Code'
-                    : 'Send OTP Code'}
+                  {sendingOtp ? (
+                    <>
+                      {/* <LoadingSpinner
+                        style={{
+                          border: '5px solid white',
+                          borderTop: '5px solid rgba(255, 255, 255, 0.3)',
+                        }}
+                      /> */}
+                      <span>Sending...</span>
+                    </>
+                  ) : sendOtp ? (
+                    'Send New OTP Code'
+                  ) : (
+                    'Send OTP Code'
+                  )}
                 </Button>
               </div>
 
               <div className={classes.actions}>
                 <Button
                   className={classes.btn}
-                  onClick={authCtx.onLogout}
+                  onClick={handleLogout}
+                  disabled={isLoading}
                 >
-                  Log Out
+                  {isLoading ? 'Logging out...' : 'Log Out'}
                 </Button>
               </div>
             </div>

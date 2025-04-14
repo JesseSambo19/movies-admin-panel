@@ -5,6 +5,7 @@ import Button from '../../../../../components/UI/Button/Button';
 import classes from './ProfileInformation.module.css';
 import useProfileApi from '../../../../../services/profile-api';
 import useInputReducers from '../../../../../utils/input-reducers';
+import LoadingSpinner from '../../../../../components/LoadingSpinner/LoadingSpinner';
 
 const ProfileInformation = () => {
   const {
@@ -107,7 +108,14 @@ const ProfileInformation = () => {
             // className={classes.btn}
             disabled={!formIsValid || isLoading}
           >
-            {isLoading ? 'SAVING...' : 'SAVE'}
+            {isLoading ? (
+              <>
+                <LoadingSpinner />
+                <span>SAVING...</span>
+              </>
+            ) : (
+              'SAVE'
+            )}
           </Button>
         </div>
       </form>

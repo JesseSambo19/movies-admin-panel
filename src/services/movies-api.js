@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { handleAxiosError } from '../utils/handleAxiosError';
+import { handleAxiosError, notifySuccess } from '../utils/handleAxiosFeedback';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
@@ -54,20 +54,24 @@ const useMoviesApi = () => {
         }
       } catch (error) {
         if (id === undefined) {
-          setError(error.message);
+          // setError(error.message);
+          setError('Something went wrong.');
           // alert(error.response.status);
           // if view is true, meaning this is for viewing or editing a movie
         } else if (view) {
           setError(error.response.status);
           // alert(error.response.status);
-        } else {
-          handleAxiosError(error);
         }
+        // else {
+        //   handleAxiosError(error);
+        // }
+        handleAxiosError(error);
+      } finally {
+        // if view is true, meaning this is for viewing or editing a movie
+        // if (id === undefined || view) {
+        setLoading(false); // ✅ This always runs, even if an error occurs
+        // }
       }
-      // if view is true, meaning this is for viewing or editing a movie
-      // if (id === undefined || view) {
-      setLoading(false);
-      // }
     },
     [setLoading]
   );
@@ -76,6 +80,7 @@ const useMoviesApi = () => {
     movie,
     setMovie,
     setInvalidInput,
+    setFormIsValid,
     setIsLoading
   ) => {
     setIsLoading(true);
@@ -91,15 +96,18 @@ const useMoviesApi = () => {
       console.log(data.data);
 
       // Show success message
-      alert(`${data.message}`);
+      // alert(`${data.message}`);
+      notifySuccess(data.message);
 
       // Reset form after successful submission
       setMovie({ title: '', openingText: '', releaseDate: '' });
       setInvalidInput({ title: false, openingText: false, releaseDate: false });
+      setFormIsValid(false);
     } catch (error) {
       handleAxiosError(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const editMovieHandler = async (id, movie, setIsLoading) => {
@@ -116,15 +124,17 @@ const useMoviesApi = () => {
       console.log(data.data);
 
       // Show success message
-      alert(`${data.message}`);
+      // alert(`${data.message}`);
+      notifySuccess(data.message);
 
       navigate('/fetch-movies');
       // console.log(data);
     } catch (error) {
       // reusable error handler function
       handleAxiosError(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const deleteMovieHandler = async (
@@ -162,7 +172,9 @@ const useMoviesApi = () => {
       console.log(data);
 
       // Show success message
-      alert(`${data.message}`);
+      // alert(`${data.message}`);
+      notifySuccess(data.message);
+
       if (id === undefined) {
         setShowModal(false);
       }
@@ -178,11 +190,13 @@ const useMoviesApi = () => {
       );
     } catch (error) {
       handleAxiosError(error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  const deleteViewedMovieHandler = async (id) => {
+  const deleteViewedMovieHandler = async (id, setIsLoading) => {
+    setIsLoading(true);
     try {
       const response = await axios.delete(`${API_URL}/movies/${id}`, {
         headers: {
@@ -195,10 +209,13 @@ const useMoviesApi = () => {
       console.log(data);
 
       // Show success message
-      alert(`${data.message}`);
+      // alert(`${data.message}`);
+      notifySuccess(data.message);
       navigate('/fetch-movies');
     } catch (error) {
       handleAxiosError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return {

@@ -3,6 +3,7 @@ import classes from './AddMovie.module.css';
 import Card from '../../../../components/UI/Card/Card';
 import Button from '../../../../components/UI/Button/Button';
 import useMoviesApi from '../../../../services/movies-api';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 function AddMovie() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +43,13 @@ function AddMovie() {
     }
 
     // addMovieHandler(input);
-    addMovieHandler(movie, setMovie, setInvalidInput, setIsLoading);
+    addMovieHandler(
+      movie,
+      setMovie,
+      setInvalidInput,
+      setFormIsValid,
+      setIsLoading
+    );
 
     console.log('submitted new movie');
   }
@@ -131,7 +138,14 @@ function AddMovie() {
           type="submit"
           disabled={!formIsValid || isLoading}
         >
-          {isLoading ? 'Adding...' : 'Add Movie'}
+          {isLoading ? (
+            <>
+              <LoadingSpinner />
+              <span>Adding...</span>
+            </>
+          ) : (
+            'Add Movie'
+          )}
         </Button>
       </form>
     </Card>

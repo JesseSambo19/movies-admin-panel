@@ -6,7 +6,7 @@ import classes from './GlobalLoadingSpinner.module.css';
 const LoadingOverlay = (props) => {
   return (
     <div className={classes['loading-overlay']}>
-      <div className={classes['spinner']}></div>
+      <div className={classes.spinner}></div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import useMoviesApi from '../../../../services/movies-api';
 import Forbidden from '../../Errors/Forbidden/Forbidden';
 import NotFound from '../../Errors/NotFound/NotFound';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 function AddMovie() {
   const [isLoading, setIsLoading] = useState(false);
@@ -150,7 +151,14 @@ function AddMovie() {
                 type="submit"
                 disabled={!formIsValid || isLoading}
               >
-                {isLoading ? 'Editing...' : 'Edit Movie'}
+                {isLoading ? (
+                  <>
+                    <LoadingSpinner />
+                    <span>Editing...</span>
+                  </>
+                ) : (
+                  'Edit Movie'
+                )}
               </Button>
             </form>
           </Card>

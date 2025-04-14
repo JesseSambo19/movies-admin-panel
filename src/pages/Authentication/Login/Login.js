@@ -9,6 +9,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
 import Logo from '../../../components/Logo/Logo';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const Login = () => {
   const {
@@ -147,7 +148,14 @@ const Login = () => {
                   // className={classes.btn}
                   disabled={!formIsValid || isLoading}
                 >
-                  {isLoading ? 'Authenticating...' : 'Login'}
+                  {isLoading ? (
+                    <>
+                      <LoadingSpinner />
+                      <span>Authenticating...</span>
+                    </>
+                  ) : (
+                    'Login'
+                  )}
                 </Button>
               </div>
               <span className={classes.links}>

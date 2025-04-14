@@ -9,6 +9,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
 import Logo from '../../../components/Logo/Logo';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const Register = () => {
   const {
@@ -196,7 +197,14 @@ const Register = () => {
                   // className={classes.btn}
                   disabled={!formIsValid || isLoading}
                 >
-                  {isLoading ? 'Registering...' : 'Register'}
+                  {isLoading ? (
+                    <>
+                      <LoadingSpinner />
+                      <span>Registering...</span>
+                    </>
+                  ) : (
+                    'Register'
+                  )}
                 </Button>
               </div>
               <span className={classes.link}>

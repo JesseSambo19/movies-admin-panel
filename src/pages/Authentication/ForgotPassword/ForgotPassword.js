@@ -9,6 +9,7 @@ import { Link, Navigate } from 'react-router-dom';
 import Center from '../../../components/UI/Center/Center';
 import useInputReducers from '../../../utils/input-reducers';
 import Logo from '../../../components/Logo/Logo';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const ForgotPassword = () => {
   const {
@@ -120,11 +121,16 @@ const ForgotPassword = () => {
                   // className={classes.btn}
                   disabled={!formIsValid || isLoading}
                 >
-                  {isLoading
-                    ? 'Sending...'
-                    : sendLink
-                    ? 'Send New Reset Link'
-                    : ' Send Reset Link'}
+                  {isLoading ? (
+                    <>
+                      <LoadingSpinner />
+                      <span>Sending...</span>
+                    </>
+                  ) : sendLink ? (
+                    'Send New Reset Link'
+                  ) : (
+                    ' Send Reset Link'
+                  )}
                 </Button>
               </div>
               <span className={classes.link}>
