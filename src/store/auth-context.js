@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import useAuthApi from '../services/auth-api';
+import {
+  handleForgotPassword,
+  handleLogin,
+  handleLogout,
+  handleRegister,
+  handleResetPassword,
+  handleSendOtp,
+  verifyOtp,
+  // handleVerifyToken,
+} from '../services/auth-api';
 
 const AuthContext = React.createContext({
   userName: '',
@@ -27,16 +36,6 @@ export const AuthContextProvider = (props) => {
   const [isVerified, setIsVerified] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const pathNameRef = useRef(''); // Using useRef to store pathName without triggering re-renders
-  const {
-    handleForgotPassword,
-    handleLogin,
-    handleLogout,
-    handleRegister,
-    handleResetPassword,
-    handleSendOtp,
-    verifyOtp,
-    // handleVerifyToken,
-  } = useAuthApi();
 
   // to ensure that the component doesn't re render for every state change
   useEffect(() => {
