@@ -107,7 +107,11 @@ export const handleRegister = async (
   }
 };
 
-export const handleForgotPassword = async (email, setIsLoading, setSendLink) => {
+export const handleForgotPassword = async (
+  email,
+  setIsLoading,
+  setSendLink
+) => {
   setIsLoading(true);
   try {
     const response = await axios.post(`${API_URL}/forgot-password`, {
@@ -213,9 +217,11 @@ export const handleSendOtp = async (setSendingOtp, setSendOtp) => {
     console.error(error);
     console.log(error);
     if (error.response.data.verified) {
-      // true
-      window.location.reload();
       notifyWarning(error.response.data.message);
+      // true
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
       localStorage.setItem('isVerified', '1');
     } else {
       handleAxiosError(error);
@@ -251,19 +257,23 @@ export const verifyOtp = async (
 
     console.log(response.data.verified);
     localStorage.setItem('isVerified', response.data.verified); // 1
+    notifySuccess(response.data.message);
     // setIsVerified(true);
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
     // } else {
     // setMessage(data.message || 'Invalid OTP');
     // alert(response.data.message || 'Invalid OTP');
-    notifySuccess(response.data.message);
     // }
   } catch (error) {
     // setMessage('An error occurred. Please try again.');
     if (error.response.data.verified) {
       // true
-      window.location.reload();
       notifyWarning(error.response.data.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
       localStorage.setItem('isVerified', '1');
     } else {
       handleAxiosError(error);
