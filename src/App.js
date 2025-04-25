@@ -32,7 +32,8 @@ const App = () => {
 
   return (
     <React.Fragment>
-      <GlobalLoadingSpinner /> {/* Spinner visible when loading */}
+      {authCtx.isLoggedIn && authCtx.isVerified && <GlobalLoadingSpinner />}{' '}
+      {/* Spinner visible when loading */}
       <ToastContainer
         position="top-center"
         autoClose={3000}
