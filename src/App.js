@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import useRouter from './router';
 import { useAuth } from './store/auth-context';
-import GlobalLoadingSpinner from './components/GlobalLoadingSpinner/GlobalLoadingSpinner';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,8 +31,6 @@ const App = () => {
 
   return (
     <React.Fragment>
-      {authCtx.isLoggedIn && authCtx.isVerified && <GlobalLoadingSpinner />}{' '}
-      {/* Spinner visible when loading */}
       <ToastContainer
         position="top-center"
         autoClose={3000}

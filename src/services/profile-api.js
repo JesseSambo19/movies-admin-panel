@@ -10,13 +10,12 @@ const useProfileApi = () => {
       setLoading(true);
       try {
         const response = await axiosInstance.get('profile');
-        const { name = '', email = '' } = response.data || {};
+        const { name, email } = response.data || {};
 
         dispatchName({ type: 'USER_INPUT', val: name });
         dispatchEmail({ type: 'USER_INPUT', val: email });
       } catch (error) {
         handleAxiosError(error);
-        console.error(error.response?.data || error.message);
       } finally {
         setLoading(false);
       }
@@ -32,7 +31,6 @@ const useProfileApi = () => {
       notifySuccess(response.data.message);
     } catch (error) {
       handleAxiosError(error);
-      console.error(error.response.data);
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +61,6 @@ const useProfileApi = () => {
       setFormIsValid(false);
     } catch (error) {
       handleAxiosError(error);
-      console.error(error.response.data);
     } finally {
       setIsLoading(false);
     }

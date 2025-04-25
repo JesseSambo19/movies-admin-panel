@@ -69,7 +69,6 @@ export const handleLogout = async (
     notifySuccess(response.data.message);
   } catch (error) {
     handleAxiosError(error);
-
     // alert('Logout failed');
   } finally {
     setIsLoading(false);
@@ -100,7 +99,6 @@ export const handleRegister = async (
     navigate('/login');
   } catch (error) {
     handleAxiosError(error);
-
     // alert('Invalid credentials');
   } finally {
     setIsLoading(false);
@@ -124,8 +122,6 @@ export const handleForgotPassword = async (
     setSendLink(true); // when sent successfully, the state of send reset link will change to resend reset link
   } catch (error) {
     handleAxiosError(error);
-
-    console.error(error);
   } finally {
     setIsLoading(false);
   }
@@ -154,8 +150,6 @@ export const handleResetPassword = async (
     navigate('/login');
   } catch (error) {
     handleAxiosError(error);
-
-    console.error(error);
   } finally {
     setIsLoading(false);
   }
@@ -172,8 +166,6 @@ export const handleVerifyEmail = async (userId, navigate) => {
     navigate('/login');
   } catch (error) {
     handleAxiosError(error);
-
-    console.error(error);
   }
 };
 
@@ -186,8 +178,6 @@ export const resendVerificationEmail = async (email) => {
     notifySuccess(response.data.message);
   } catch (error) {
     handleAxiosError(error);
-
-    console.error(error);
   }
 };
 
@@ -214,7 +204,6 @@ export const handleSendOtp = async (setSendingOtp, setSendOtp) => {
     setSendOtp(true); // when sent successfully, the state of send otp will change to resend otp
   } catch (error) {
     // setMessage("Failed to send OTP.");
-    console.error(error);
     console.log(error);
     if (error.response.data.verified) {
       notifyWarning(error.response.data.message);
@@ -296,7 +285,6 @@ export const handleVerifyToken = async (token, setIsLoggedIn) => {
     }
   } catch (error) {
     handleAxiosError(error);
-
     setIsLoggedIn(false);
     localStorage.removeItem('token');
     localStorage.removeItem('isLoggedIn');
