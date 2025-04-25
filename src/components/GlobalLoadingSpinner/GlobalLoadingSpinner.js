@@ -27,8 +27,8 @@ function GlobalLoadingSpinner() {
   useEffect(() => {
     if (
       location.pathname === '/fetch-movies' ||
-      location.pathname.search('/view-movie') ||
-      location.pathname.search('/edit-movie') ||
+      location.pathname.includes('/view-movie') ||
+      location.pathname.includes('/edit-movie') ||
       location.pathname === '/profile'
     ) {
       return;
