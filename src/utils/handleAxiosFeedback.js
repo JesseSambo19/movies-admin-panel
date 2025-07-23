@@ -19,6 +19,13 @@ export const handleAxiosError = (error) => {
       message = 'The service is currently unavailable.';
     } else if (status === 401 || status === 403) {
       message = 'You are not authorized.';
+      if (status === 401) {
+        localStorage.clear();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+        notifyWarning('Session expired.');
+      }
     } else if (status === 400 || status === 422) {
       // Show backend error messages for expected client-side issues
       message = error.response.data?.message || 'Invalid input.';

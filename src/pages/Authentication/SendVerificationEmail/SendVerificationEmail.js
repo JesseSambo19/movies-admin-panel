@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Card from '../../../components/UI/Card/Card';
-import classes from './SendOTPEmail.module.css';
+import classes from './SendVerificationEmail.module.css';
 import Button from '../../../components/UI/Button/Button';
 import { useAuth } from '../../../store/auth-context';
 

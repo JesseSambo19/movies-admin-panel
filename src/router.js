@@ -12,7 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/Authentication/Register/Register';
 import ForgotPassword from './pages/Authentication/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/Authentication/ResetPassword/ResetPassword';
-import SendVerificationEmail from './pages/Authentication/SendOTPEmail/SendOTPEmail';
+import SendVerificationEmail from './pages/Authentication/SendVerificationEmail/SendVerificationEmail';
 import Profile from './pages/Dashboard/Profile/Profile';
 import { useAuth } from './store/auth-context';
 import Redirect from './components/Redirect';
