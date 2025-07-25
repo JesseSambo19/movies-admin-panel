@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { handleAxiosError, notifySuccess } from '../utils/handleAxiosFeedback';
+import useErrorHandler, { notifySuccess } from '../utils/handleAxiosFeedback';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../utils/constants';
@@ -7,6 +7,7 @@ import { useLoading } from '../store/loading-context';
 
 const useMoviesApi = () => {
   const { setLoading } = useLoading();
+  const { handleAxiosError } = useErrorHandler();
   const navigate = useNavigate();
 
   const fetchMoviesHandler = useCallback(
@@ -73,7 +74,7 @@ const useMoviesApi = () => {
         // }
       }
     },
-    [setLoading]
+    [setLoading, handleAxiosError]
   );
 
   const addMovieHandler = async (

@@ -1,24 +1,21 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import {
-  handleForgotPassword,
-  handleLogin,
-  handleLogout,
-  handleRegister,
-  handleResetPassword,
-  handleSendOtp,
-  verifyOtp,
-  // handleVerifyToken,
-} from '../services/auth-api';
+import useAuthApi from '../services/auth-api';
 
 const AuthContext = React.createContext({
   userName: '',
+  email: '',
   isLoggedIn: false,
   isLoggedOut: false,
   isVerified: false,
   isCheckingAuth: true, // ✅ New state to indicate checking auth
   isLoading: false,
   pathName: '',
+  setUserName: () => {},
+  setIsLoggedIn: () => {},
+  setIsLoggedOut: () => {},
+  setIsVerified: () => {},
   onLogout: () => {},
+  onSessionTimedOut: () => {},
   onLogin: (email, password) => {},
   onRegister: (name, email, password, confirmPassword) => {},
   onForgotPassword: (email) => {},
@@ -27,21 +24,33 @@ const AuthContext = React.createContext({
   onVerifyOtp: (otpCode) => {},
   onAddPathName: (pathName) => {},
   onRemovePathName: () => {},
+  onResetAuthStates: () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const pathNameRef = useRef(''); // Using useRef to store pathName without triggering re-renders
+  const {
+    handleForgotPassword,
+    handleLogin,
+    handleLogout,
+    handleRegister,
+    handleResetPassword,
+    handleSendOtp,
+    verifyOtp,
+  } = useAuthApi();
 
   // to ensure that the component doesn't re render for every state change
   useEffect(() => {
     const isLoggedInCache = localStorage.getItem('isLoggedIn');
     const token = localStorage.getItem('token'); // Store the token in localStorage
     const userNameCache = localStorage.getItem('userName'); // Retrieve the user's name from localStorage
+    const emailCache = localStorage.getItem('email');
     const isVerifiedCache = localStorage.getItem('isVerified'); // Retrieve the user's name from localStorage
 
     // if the user is logged in with a valid token and verified then the user will be authenticated on the dashboard
@@ -49,6 +58,7 @@ export const AuthContextProvider = (props) => {
       setIsLoggedIn(true);
       setIsVerified(true);
       setUserName(userNameCache);
+      setEmail(emailCache);
 
       // Optional: You could check token expiry here if you have expiry time available
       // handleVerifyToken(token, setIsLoggedIn)
@@ -93,6 +103,7 @@ export const AuthContextProvider = (props) => {
     // But it's just a dummy/ demo anyways
     handleLogin(
       setUserName,
+      setEmail,
       email,
       password,
       getPathNameHandler,
@@ -109,6 +120,7 @@ export const AuthContextProvider = (props) => {
       setIsLoggedIn,
       setIsLoggedOut,
       setUserName,
+      setEmail,
       setIsVerified,
       setIsLoading
     );
@@ -188,16 +200,31 @@ export const AuthContextProvider = (props) => {
     );
   };
 
+  const resetAuthStates = () => {
+    setIsLoggedIn(false);
+    setIsLoggedOut(true); // this ensures that when the user logs out, the path/page where they were at before redirected to /login
+    //  isn't saved in localStorage so when they login again, they will be redirected to /home
+    setUserName('');
+    setEmail('');
+    setIsVerified(false);
+  };
+
   return (
     <AuthContext.Provider
       value={{
         userName,
+        email,
         isLoggedIn,
         isLoggedOut,
         isVerified,
         isCheckingAuth, // ✅ Provide this state to context
         // pathName: pathName,
         pathName: pathNameRef.current, // Provide pathName from useRef
+        setUserName,
+        setEmail,
+        setIsLoggedIn,
+        setIsLoggedOut,
+        setIsVerified,
         onLogout: logoutHandler,
         onLogin: loginHandler,
         onRegister: registerHandler,
@@ -207,6 +234,7 @@ export const AuthContextProvider = (props) => {
         onSendOtp: sendOtpHandler,
         onAddPathName: addPathNameHandler,
         onRemovePathName: removePathNameHandler,
+        onResetAuthStates: resetAuthStates,
       }}
     >
       {props.children}

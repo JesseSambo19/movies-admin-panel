@@ -1,10 +1,13 @@
 import { useCallback } from 'react';
 import { useLoading } from '../store/loading-context';
 import axiosInstance from '../utils/axios';
-import { handleAxiosError, notifySuccess } from '../utils/handleAxiosFeedback';
+import useErrorHandler, { notifySuccess } from '../utils/handleAxiosFeedback';
+import { useAuth } from '../store/auth-context';
 
 const useProfileApi = () => {
   const { setLoading } = useLoading();
+  const {setUserName, setEmail} = useAuth();
+  const { handleAxiosError } = useErrorHandler();
   const fetchUserProfile = useCallback(
     async (dispatchName, dispatchEmail) => {
       setLoading(true);
@@ -20,13 +23,21 @@ const useProfileApi = () => {
         setLoading(false);
       }
     },
-    [setLoading]
+    [setLoading, handleAxiosError]
   );
 
   const updateUserProfile = async (name, email, setIsLoading) => {
     setIsLoading(true);
     try {
       const response = await axiosInstance.put('profile', { name, email });
+
+      if (localStorage.getItem('userName') !== response.data.user.name) {
+        localStorage.setItem('userName', response.data.user.name);
+        setUserName(response.data.user.name);
+      } else if (localStorage.getItem('email') !== response.data.user.email) {
+        localStorage.setItem('email', response.data.user.email);
+        setEmail(response.data.user.email);
+      }
       // alert(response.data.message);
       notifySuccess(response.data.message);
     } catch (error) {

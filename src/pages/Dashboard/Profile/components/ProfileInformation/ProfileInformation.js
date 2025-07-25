@@ -6,6 +6,7 @@ import classes from './ProfileInformation.module.css';
 import useProfileApi from '../../../../../services/profile-api';
 import useInputReducers from '../../../../../utils/input-reducers';
 import LoadingSpinner from '../../../../../components/LoadingSpinner/LoadingSpinner';
+import { useAuth } from '../../../../../store/auth-context';
 
 const ProfileInformation = () => {
   const {
@@ -26,6 +27,7 @@ const ProfileInformation = () => {
     nameIsValid,
     emailIsValid,
   } = useInputReducers();
+  const authCtx = useAuth();
 
   const { fetchUserProfile, updateUserProfile } = useProfileApi();
 
@@ -106,7 +108,12 @@ const ProfileInformation = () => {
           <Button
             type="submit"
             // className={classes.btn}
-            disabled={!formIsValid || isLoading}
+            disabled={
+              !formIsValid ||
+              isLoading ||
+              (nameState.value === authCtx.userName &&
+                emailState.value === authCtx.email)
+            }
           >
             {isLoading ? (
               <>
